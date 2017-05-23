@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="c-meteor">
+    meteor
   </div>
 </template>
 

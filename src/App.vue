@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <meteor></meteor>
     <loading :progress="progress" v-show="loading"></loading>
     <show v-show="!loading"></show>
   </div>
@@ -10,12 +11,14 @@ import '@/assets/css/app.css'
 import Loader from 'resource-loader'
 import Loading from '@/views/Loading'
 import Show from '@/views/Show'
+import Meteor from '@/components/Meteor'
 
 export default {
   name: 'app',
   components: {
     'loading': Loading,
-    'show': Show
+    'show': Show,
+    'meteor': Meteor
   },
 
   data () {
@@ -50,7 +53,7 @@ export default {
 
       loader.onComplete.add(() => {
         setTimeout(() => {
-        //  this.showLoading = false
+          this.loading = false
         }, 500)
       })
 
