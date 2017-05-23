@@ -1,0 +1,11 @@
+body {
+  margin: 0;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000;
+  background-image: url(../images/bg_loading.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}

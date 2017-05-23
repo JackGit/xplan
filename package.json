@@ -11,6 +11,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "center-it": "^0.1.0",
     "image-sprite": "0.0.1",
     "resource-loader": "^2.0.8",
     "three": "^0.85.2",

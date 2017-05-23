@@ -1,0 +1,52 @@
+
+.c-loading {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.c-loading__text {
+  position: absolute;
+  width: 93px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  margin: -160px 0 0 -46.5px;
+  background-image: url(../images/bg_loading_text.png);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.c-loading__orbits {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 302px;
+  height: 130px;
+  margin: -82px 0 0 -151px;
+  background-image: url(../images/bg_loading_orbits.png);
+  background-size: 302px 130px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.c-loading__tips {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  margin-top: 75px;
+  width: 100%;
+  font-size: 10px;
+  text-align: center;
+  color: #c0d4ff;
+}
+.c-loading__progress {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+}
