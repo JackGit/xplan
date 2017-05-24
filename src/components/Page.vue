@@ -8,9 +8,10 @@
 
 <script>
 import '@/assets/css/page.css'
+import Constants from '@/assets/js/constants'
 import CenterIt from 'center-it'
-const WIDTH = 375
-const HEIGHT = 600
+const WIDTH = Constants.PAGE_WIDTH
+const HEIGHT = Constants.PAGE_HEIGHT
 
 export default {
   wrapper: null,

@@ -15,6 +15,7 @@
     "image-sprite": "0.0.1",
     "resource-loader": "^2.0.8",
     "three": "^0.85.2",
+    "three-orbit-controls": "^82.1.0",
     "vue": "^2.2.6"
   },
   "devDependencies": {
