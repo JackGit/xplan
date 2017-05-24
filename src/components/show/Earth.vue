@@ -9,8 +9,7 @@ import Earth from '@/assets/js/earth'
 
 export default {
   mounted () {
-    let earth = new Earth(this.$refs.mountNode)
-    earth.start()
+    window.earth = new Earth(this.$refs.mountNode)
   }
 }
 </script>

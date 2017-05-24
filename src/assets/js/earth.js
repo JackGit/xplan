@@ -1,8 +1,14 @@
 import * as THREE from 'three'
 import imageEarth4 from '@/assets/images/earth4.jpg'
 import imageEarthBump from '@/assets/images/earth_bump.jpg'
-import imageEarthSpec from '@/assets/images/earth_spec.png'
+import imageEarthSpec from '@/assets/images/earth_spec.jpg'
 import imageEarthCloud from '@/assets/images/earth_cloud.png'
+/* import imageNamibia from '@/assets/images/i_namibia.png'
+import imageMariana from '@/assets/images/i_mariana.png'
+import imageGreenland from '@/assets/images/i_greenland.png'
+import imageGalapagos from '@/assets/images/i_galapagos.png'
+import imageAntarcica from '@/assets/images/i_antarctica.png' */
+
 import Constants from '@/assets/js/constants'
 
 const OrbitControls = require('three-orbit-controls')(THREE)
@@ -31,12 +37,14 @@ export default class Earth {
     this.cloud = null
     this.controller = null
 
+    this.autoRotate = true
+
     this._init()
   }
 
   _init () {
-    this._createCamera()
     this._createScene()
+    this._createCamera()
     this._createLight()
     this._createEarth()
     this._createCloud()
@@ -59,16 +67,15 @@ export default class Earth {
   }
 
   _createCamera () {
-    this.camera = new THREE.PerspectiveCamera(54, WIDTH / HEIGHT, 0.01, 1000)
-    this.camera.position.z = 2
+    let camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 0.1, 1000)
+    camera.position.set(3.55, 0, -28)
+    this.scene.add(camera) // this is required cause there is a light under camera
+    this.camera = camera
   }
 
   _createLight () {
-    let directionalLight = new THREE.DirectionalLight(this.options.DirectionalLight, 1)
     let ambientLight = new THREE.AmbientLight(this.options.ambientLight, 0.5)
-    let spotLight = new THREE.SpotLight(0xffffff, 1.2)
-
-    directionalLight.position.set(-50, 20, 10)
+    let spotLight = new THREE.SpotLight(0xffffff, 1.5)
 
     spotLight.position.set(-26, 11, -11)
     spotLight.angle = 0.2
@@ -82,9 +89,8 @@ export default class Earth {
     spotLight.shadow.mapSize.height = 1024
     spotLight.shadow.mapSize.width = 1024
 
-    this.scene.add(directionalLight)
     this.scene.add(ambientLight)
-    // this.scene.add(spotLight)
+    this.camera.add(spotLight)  // fixed light direction by adding it as child of camera
   }
 
   _createScene () {
@@ -95,13 +101,13 @@ export default class Earth {
     let material = new THREE.MeshPhongMaterial({
       map: loader.load(imageEarth4),
       bumpMap: loader.load(imageEarthBump),
-      bumpScale: 0.005,
+      bumpScale: 0.15,
       specularMap: loader.load(imageEarthSpec),
       specular: new THREE.Color('#909090'),
       shininess: 5,
       transparent: true
     })
-    let sphere = new THREE.SphereGeometry(0.5, 32, 32)
+    let sphere = new THREE.SphereGeometry(5, 32, 32)
     let earth = new THREE.Mesh(sphere, material)
 
     this.earth = earth
@@ -109,7 +115,7 @@ export default class Earth {
   }
 
   _createCloud () {
-    let sphere = new THREE.SphereGeometry(0.52, 32, 32)
+    let sphere = new THREE.SphereGeometry(5.2, 32, 32)
     let material = new THREE.MeshPhongMaterial({
       map: loader.load(imageEarthCloud),
       transparent: true,
@@ -141,13 +147,19 @@ export default class Earth {
   }
 
   _createRenderer () {
-    let renderer = new THREE.WebGLRenderer({alpha: true})
+    let renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      preserveDrawingBuffer: true
+    })
     let container = this.container
 
     renderer.setClearColor(0x000000, 0)
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(WIDTH, HEIGHT)
+    renderer.setSize(WIDTH * 2, HEIGHT * 2)
     renderer.domElement.style.position = 'relative'
+    renderer.domElement.style.width = WIDTH + 'px'
+    renderer.domElement.style.height = HEIGHT + 'px'
     container.appendChild(renderer.domElement)
     this.renderer = renderer
   }
@@ -159,32 +171,19 @@ export default class Earth {
   }
 
   _render () {
-    this.earth.rotation.y += 0.001
-    this.cloud.rotation.y += 0.0005
+    // this.earth.rotation.y += 0.001
+    // this.cloud.rotation.y += 0.0005
+    // let rotSpeed = 0.001
+    // this.camera.position.x = this.camera.position.x * Math.cos(rotSpeed) - this.camera.position.z * Math.sin(rotSpeed)
+    // this.camera.position.z = this.camera.position.z * Math.cos(rotSpeed) + this.camera.position.x * Math.sin(rotSpeed)
     this.renderer.render(this.scene, this.camera)
   }
 
-  _bindEvents () {
-    window.addEventListener('resize', this._resize.bind(this))
-  }
-
-  _resize () {
-    /* let camera = this.camera
-    let renderer = this.renderer
-    // windowHalfX = window.innerWidth / 2
-    // windowHalfY = window.innerHeight / 2
-    camera.aspect = WIDTH / HEIGHT
-    camera.updateProjectionMatrix()
-    renderer.setSize(WIDTH, HEIGHT) */
-  }
-
-  _start () {}
-  _move () {}
-  _end () {}
+  _bindEvents () {}
 
   start () {}
   stop () {}
   zoomIn () {}
   zoomOut () {}
-  rotate () {}
+  rotateTo () {}
 }
