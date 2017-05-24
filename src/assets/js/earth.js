@@ -1,33 +1,14 @@
 import * as THREE from 'three'
-import imageEarth4 from '@/assets/images/earth4.jpg'
-import imageEarthBump from '@/assets/images/earth_bump.jpg'
-import imageEarthSpec from '@/assets/images/earth_spec.jpg'
-import imageEarthCloud from '@/assets/images/earth_cloud.png'
-/* import imageNamibia from '@/assets/images/i_namibia.png'
-import imageMariana from '@/assets/images/i_mariana.png'
-import imageGreenland from '@/assets/images/i_greenland.png'
-import imageGalapagos from '@/assets/images/i_galapagos.png'
-import imageAntarcica from '@/assets/images/i_antarctica.png' */
+import { PAGE_WIDTH, PAGE_HEIGHT, IMAGE_URLS, PLACES } from '@/assets/js/constants'
 
-import Constants from '@/assets/js/constants'
-
+const WIDTH = PAGE_WIDTH
+const HEIGHT = PAGE_HEIGHT
 const OrbitControls = require('three-orbit-controls')(THREE)
-const WIDTH = Constants.PAGE_WIDTH
-const HEIGHT = Constants.PAGE_HEIGHT
 
 let loader = new THREE.TextureLoader()
 
 export default class Earth {
   constructor (el, options) {
-    let defaultOptions = {
-      directionalLight: 0xffffff,
-      ambientLight: 0x393939,
-      earth: {},
-      cloud: {},
-      labels: [],
-      camera: {}
-    }
-    this.options = defaultOptions
     this.container = typeof el === 'string' ? document.getElementOf(el) : el
 
     this.camera = null
@@ -35,6 +16,7 @@ export default class Earth {
     this.scene = null
     this.earth = null
     this.cloud = null
+    this.spriteGroup = null
     this.controller = null
 
     this.autoRotate = true
@@ -48,7 +30,7 @@ export default class Earth {
     this._createLight()
     this._createEarth()
     this._createCloud()
-    // this._createLabels()
+    this._createLabels()
     this._createController()
     this._createRenderer()
 
@@ -68,13 +50,13 @@ export default class Earth {
 
   _createCamera () {
     let camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 0.1, 1000)
-    camera.position.set(3.55, 0, -28)
+    camera.position.set(0, 0, -28)
     this.scene.add(camera) // this is required cause there is a light under camera
     this.camera = camera
   }
 
   _createLight () {
-    let ambientLight = new THREE.AmbientLight(this.options.ambientLight, 0.5)
+    let ambientLight = new THREE.AmbientLight(0x393939, 0.5)
     let spotLight = new THREE.SpotLight(0xffffff, 1.5)
 
     spotLight.position.set(-26, 11, -11)
@@ -99,10 +81,10 @@ export default class Earth {
 
   _createEarth () {
     let material = new THREE.MeshPhongMaterial({
-      map: loader.load(imageEarth4),
-      bumpMap: loader.load(imageEarthBump),
+      map: loader.load(IMAGE_URLS.earth),
+      bumpMap: loader.load(IMAGE_URLS.earthBump),
       bumpScale: 0.15,
-      specularMap: loader.load(imageEarthSpec),
+      specularMap: loader.load(IMAGE_URLS.earthSpec),
       specular: new THREE.Color('#909090'),
       shininess: 5,
       transparent: true
@@ -117,7 +99,7 @@ export default class Earth {
   _createCloud () {
     let sphere = new THREE.SphereGeometry(5.2, 32, 32)
     let material = new THREE.MeshPhongMaterial({
-      map: loader.load(imageEarthCloud),
+      map: loader.load(IMAGE_URLS.earthCloud),
       transparent: true,
       opacity: 1,
       blending: THREE.AdditiveBlending
@@ -129,21 +111,25 @@ export default class Earth {
   }
 
   _createLabels () {
-    this.options.labels.forEach(label => {
-      let sprite = this._createSprite(label)
-      this.scene.add(sprite)
+    let group = new THREE.Group()
+    this.scene.add(group)
+    PLACES.forEach(place => {
+      let sprite = this._createSprite(place)
+      group.add(sprite)
     })
+    this.spriteGroup = group
   }
 
-  _createSprite (label) {
+  _createSprite (place) {
     let spriteMaterial = new THREE.SpriteMaterial({
-      map: loader.load('/static/img/i_namibia.png'),
+      map: loader.load(place.labelImage),
       color: 0xffffff,
       fog: true
     })
     let sprite = new THREE.Sprite(spriteMaterial)
-    sprite.position.set(0.5, 0.3, 0)
-    sprite.scale.set(0.1, 0.1, 0.1)
+    sprite.position.set(place.position[0], place.position[1], place.position[2])
+    sprite.scale.set(1.4, 1.4, 1.4)
+    return sprite
   }
 
   _createRenderer () {

@@ -8,10 +8,8 @@
 
 <script>
 import '@/assets/css/page.css'
-import Constants from '@/assets/js/constants'
+import { PAGE_WIDTH, PAGE_HEIGHT } from '@/assets/js/constants'
 import CenterIt from 'center-it'
-const WIDTH = Constants.PAGE_WIDTH
-const HEIGHT = Constants.PAGE_HEIGHT
 
 export default {
   wrapper: null,
@@ -30,8 +28,8 @@ export default {
       let ratio = new CenterIt({
         containerWidth: window.innerWidth,
         containerHeight: window.innerHeight,
-        originWidth: WIDTH,
-        originHeight: HEIGHT,
+        originWidth: PAGE_WIDTH,
+        originHeight: PAGE_HEIGHT,
         centerType: 'contain'
       }).ratio()
       $wrapper.style.transform = `scale(${ratio})`
