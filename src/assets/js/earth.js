@@ -1,5 +1,6 @@
 import * as THREE from 'three'
-import { PAGE_WIDTH, PAGE_HEIGHT, IMAGE_URLS, PLACES } from '@/assets/js/constants'
+import TWEEN from 'tween.js'
+import { PAGE_WIDTH, PAGE_HEIGHT, IMAGE_URLS, LOCATIONS } from '@/assets/js/constants'
 
 const WIDTH = PAGE_WIDTH
 const HEIGHT = PAGE_HEIGHT
@@ -20,6 +21,7 @@ export default class Earth {
     this.controller = null
 
     this.autoRotate = true
+    this.tween = null
 
     this._init()
   }
@@ -113,21 +115,21 @@ export default class Earth {
   _createLabels () {
     let group = new THREE.Group()
     this.scene.add(group)
-    PLACES.forEach(place => {
-      let sprite = this._createSprite(place)
+    LOCATIONS.forEach(location => {
+      let sprite = this._createSprite(location)
       group.add(sprite)
     })
     this.spriteGroup = group
   }
 
-  _createSprite (place) {
+  _createSprite (location) {
     let spriteMaterial = new THREE.SpriteMaterial({
-      map: loader.load(place.labelImage),
+      map: loader.load(location.labelImage),
       color: 0xffffff,
       fog: true
     })
     let sprite = new THREE.Sprite(spriteMaterial)
-    sprite.position.set(place.position[0], place.position[1], place.position[2])
+    sprite.position.set(location.position[0], location.position[1], location.position[2])
     sprite.scale.set(1.4, 1.4, 1.4)
     return sprite
   }
@@ -152,16 +154,21 @@ export default class Earth {
 
   _loop () {
     requestAnimationFrame(this._loop.bind(this))
-    this.controller.update()
     this._render()
   }
 
   _render () {
+    if (this.tween) {
+      TWEEN.update()
+    }
+
+    this.controller.update()
     // this.earth.rotation.y += 0.001
     // this.cloud.rotation.y += 0.0005
     // let rotSpeed = 0.001
     // this.camera.position.x = this.camera.position.x * Math.cos(rotSpeed) - this.camera.position.z * Math.sin(rotSpeed)
     // this.camera.position.z = this.camera.position.z * Math.cos(rotSpeed) + this.camera.position.x * Math.sin(rotSpeed)
+    // this.camera.position.x += 0.01
     this.renderer.render(this.scene, this.camera)
   }
 
@@ -171,5 +178,22 @@ export default class Earth {
   stop () {}
   zoomIn () {}
   zoomOut () {}
-  rotateTo () {}
+  rotateTo (name) {
+    let location = LOCATIONS.filter(location => location.name.toLowerCase() === name)[0]
+    if (location) {
+      let camera = this.camera
+      this.tween = new TWEEN.Tween({
+        x: camera.position.x,
+        y: camera.position.y,
+        z: camera.position.z
+      }).to({
+        x: location.cameraPosition[0],
+        y: location.cameraPosition[1],
+        z: location.cameraPosition[2]
+      }, 1000).start()
+      this.tween.onUpdate(function () {
+        camera.position.set(this.x, this.y, this.z)
+      })
+    }
+  }
 }
