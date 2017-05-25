@@ -14,14 +14,19 @@ export default class Earth {
 
     this.camera = null
     this.renderer = null
-    this.scene = null
-    this.earth = null
-    this.cloud = null
-    this.spriteGroup = null
     this.controller = null
 
+    this.scene = null
+    this.earthGroup = null
+    this.spriteGroup = null
+    this.earth = null
+    this.cloud = null
+
     this.autoRotate = true
+    this.rotationSpeed = 0.001
+    this.cloudSpeed = -0.0003
     this.tween = null
+    this.isTweening = false
 
     this._init()
   }
@@ -36,7 +41,6 @@ export default class Earth {
     this._createController()
     this._createRenderer()
 
-    this._bindEvents()
     this._loop()
   }
 
@@ -82,6 +86,7 @@ export default class Earth {
   }
 
   _createEarth () {
+    let group = new THREE.Group()
     let material = new THREE.MeshPhongMaterial({
       map: loader.load(IMAGE_URLS.earth),
       bumpMap: loader.load(IMAGE_URLS.earthBump),
@@ -94,8 +99,10 @@ export default class Earth {
     let sphere = new THREE.SphereGeometry(5, 32, 32)
     let earth = new THREE.Mesh(sphere, material)
 
+    group.add(earth)
+    this.scene.add(group)
+    this.earthGroup = group
     this.earth = earth
-    this.scene.add(earth)
   }
 
   _createCloud () {
@@ -108,17 +115,18 @@ export default class Earth {
     })
     let cloud = new THREE.Mesh(sphere, material)
 
+    this.earthGroup.add(cloud)
     this.cloud = cloud
-    this.scene.add(cloud)
   }
 
   _createLabels () {
     let group = new THREE.Group()
-    this.scene.add(group)
     LOCATIONS.forEach(location => {
       let sprite = this._createSprite(location)
       group.add(sprite)
     })
+
+    this.earthGroup.add(group)
     this.spriteGroup = group
   }
 
@@ -158,42 +166,71 @@ export default class Earth {
   }
 
   _render () {
+    let rotationSpeed = this.rotationSpeed
+    let cloudSpeed = this.cloudSpeed
+
+    if (this.autoRotate) {
+      this.camera.position.x = this.camera.position.x * Math.cos(rotationSpeed) - this.camera.position.z * Math.sin(rotationSpeed)
+      this.camera.position.z = this.camera.position.z * Math.cos(rotationSpeed) + this.camera.position.x * Math.sin(rotationSpeed)
+    }
+
     if (this.tween) {
       TWEEN.update()
     }
 
+    this.cloud.rotation.y += cloudSpeed
+
     this.controller.update()
-    // this.earth.rotation.y += 0.001
-    // this.cloud.rotation.y += 0.0005
-    // let rotSpeed = 0.001
-    // this.camera.position.x = this.camera.position.x * Math.cos(rotSpeed) - this.camera.position.z * Math.sin(rotSpeed)
-    // this.camera.position.z = this.camera.position.z * Math.cos(rotSpeed) + this.camera.position.x * Math.sin(rotSpeed)
-    // this.camera.position.x += 0.01
     this.renderer.render(this.scene, this.camera)
   }
 
-  _bindEvents () {}
+  _tweenTo (position, duration = 1000, easing = TWEEN.Easing.Linear.None) {
+    let camera = this.camera
 
-  start () {}
-  stop () {}
-  zoomIn () {}
-  zoomOut () {}
-  rotateTo (name) {
+    this.tween = new TWEEN.Tween({
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z
+    }).easing(easing).to({
+      x: position[0],
+      y: position[1],
+      z: position[2]
+    }, duration).start()
+
+    this.tween.onUpdate(function () {
+      camera.position.set(this.x, this.y, this.z)
+    })
+    this.tween.onComplete(() => {
+      this.isTweening = false
+      console.log('tween completed')
+    })
+    this.isTweening = true
+  }
+
+  _toLocation (name, isNear = false, duration, easing) {
     let location = LOCATIONS.filter(location => location.name.toLowerCase() === name)[0]
     if (location) {
-      let camera = this.camera
-      this.tween = new TWEEN.Tween({
-        x: camera.position.x,
-        y: camera.position.y,
-        z: camera.position.z
-      }).to({
-        x: location.cameraPosition[0],
-        y: location.cameraPosition[1],
-        z: location.cameraPosition[2]
-      }, 1000).start()
-      this.tween.onUpdate(function () {
-        camera.position.set(this.x, this.y, this.z)
-      })
+      this._tweenTo(isNear ? location.cameraNearPosition : location.cameraFarPosition, duration, easing)
     }
+  }
+
+  startAutoRotate () {
+    this.autoRotate = true
+  }
+
+  stopAutoRotate () {
+    this.autoRotate = false
+  }
+
+  rotateTo (name) {
+    this._toLocation(name)
+  }
+
+  zoomInTo (name) {
+    this._toLocation(name, true, 1000, TWEEN.Easing.Quadratic.In)
+  }
+
+  zoomOutTo (name) {
+    this._toLocation(name, false, 1000, TWEEN.Easing.Quadratic.Out)
   }
 }
