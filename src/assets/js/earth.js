@@ -28,6 +28,8 @@ export default class Earth {
     this.tween = null
     this.isTweening = false
 
+    this.onTweenComplete = null
+
     this._init()
   }
 
@@ -202,15 +204,17 @@ export default class Earth {
     })
     this.tween.onComplete(() => {
       this.isTweening = false
-      console.log('tween completed')
+      this.onTweenComplete && this.onTweenComplete()
+      this.onTweenComplete = null
     })
     this.isTweening = true
   }
 
-  _toLocation (name, isNear = false, duration, easing) {
+  _toLocation (name, { isNear = false, duration, easing, onComplete }) {
     let location = LOCATIONS.filter(location => location.name.toLowerCase() === name)[0]
     if (location) {
       this._tweenTo(isNear ? location.cameraNearPosition : location.cameraFarPosition, duration, easing)
+      this.onTweenComplete = onComplete
     }
   }
 
@@ -222,15 +226,22 @@ export default class Earth {
     this.autoRotate = false
   }
 
-  rotateTo (name) {
-    this._toLocation(name)
+  rotateTo (name, onComplete) {
+    this._toLocation(name, { onComplete })
   }
 
-  zoomInTo (name) {
-    this._toLocation(name, true, 1000, TWEEN.Easing.Quadratic.In)
+  zoomInTo (name, onComplete) {
+    this._toLocation(name, {
+      isNear: true,
+      easing: TWEEN.Easing.Quadratic.In,
+      onComplete
+    })
   }
 
-  zoomOutTo (name) {
-    this._toLocation(name, false, 1000, TWEEN.Easing.Quadratic.Out)
+  zoomOutTo (name, onComplete) {
+    this._toLocation(name, {
+      easing: TWEEN.Easing.Quadratic.Out,
+      onComplete
+    })
   }
 }

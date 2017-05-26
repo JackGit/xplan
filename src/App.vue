@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <meteor></meteor>
     <loading :progress="progress" v-show="loading"></loading>
-    <show v-show="!loading"></show>
+    <show v-if="!loading" :target="target"></show>
+    <meteor v-if="!loading"></meteor>
+    <clouds :play="playCloud" v-if="!loading"></clouds>
   </div>
 </template>
 
@@ -12,39 +13,47 @@ import Loader from 'resource-loader'
 import Loading from '@/views/Loading'
 import Show from '@/views/Show'
 import Meteor from '@/components/Meteor'
+import Clouds from '@/components/Clouds'
+import { IMAGE_URLS } from '@/assets/js/constants'
 
 export default {
   name: 'app',
   components: {
     'loading': Loading,
     'show': Show,
-    'meteor': Meteor
+    'meteor': Meteor,
+    'clouds': Clouds
   },
 
   data () {
     return {
       progress: 13,
-      loading: true
+      loading: true,
+      playCloud: '',
+      target: ''
     }
   },
 
   mounted () {
     this.initLoader()
+    setTimeout(() => {
+      this.target = 'greenland'
+    }, 2000)
+    /* setInterval(() => {
+      if (this.playCloud === 'in') {
+        this.playCloud = 'out'
+      } else {
+        this.playCloud = 'in'
+      }
+    }, 3000) */
   },
 
   methods: {
     initLoader () {
       let loader = new Loader()
 
-      ;[
-        'http://qiniu.jackyang.me/h5/image/sniper_view.png',
-        'http://qiniu.jackyang.me/h5/image/cloud_01.png',
-        'http://qiniu.jackyang.me/h5/image/cloud_02.png',
-        'http://qiniu.jackyang.me/h5/image/logo.png',
-        'http://qiniu.jackyang.me/h5/image/logo_text.png',
-        'http://qiniu.jackyang.me/h5/image/logo_text_small.png'
-      ].forEach(url => {
-        loader.add(url, url)
+      Object.keys(IMAGE_URLS).forEach(name => {
+        loader.add(name, IMAGE_URLS[name])
       })
 
       loader.onProgress.add(() => {

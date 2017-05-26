@@ -7,6 +7,19 @@ import imageMariana from '@/assets/images/i_mariana.png'
 import imageGreenland from '@/assets/images/i_greenland.png'
 import imageGalapagos from '@/assets/images/i_galapagos.png'
 import imageAntarcica from '@/assets/images/i_antarctica.png'
+import cloud0 from '@/assets/images/kf_cloud_00000.jpg'
+import cloud1 from '@/assets/images/kf_cloud_00001.jpg'
+import cloud2 from '@/assets/images/kf_cloud_00002.jpg'
+import cloud3 from '@/assets/images/kf_cloud_00003.jpg'
+import cloud4 from '@/assets/images/kf_cloud_00004.jpg'
+import cloud5 from '@/assets/images/kf_cloud_00005.jpg'
+import cloud6 from '@/assets/images/kf_cloud_00006.jpg'
+import cloud7 from '@/assets/images/kf_cloud_00007.jpg'
+import cloud8 from '@/assets/images/kf_cloud_00008.jpg'
+import cloud9 from '@/assets/images/kf_cloud_00009.jpg'
+import cloud10 from '@/assets/images/kf_cloud_00010.jpg'
+import cloud11 from '@/assets/images/kf_cloud_00011.jpg'
+import cloud12 from '@/assets/images/kf_cloud_00012.jpg'
 
 export const PAGE_WIDTH = 375
 export const PAGE_HEIGHT = 600
@@ -20,7 +33,20 @@ export const IMAGE_URLS = {
   iMariana: imageMariana,
   iGreenland: imageGreenland,
   iGalapagos: imageGalapagos,
-  iAntarcica: imageAntarcica
+  iAntarcica: imageAntarcica,
+  cloud0,
+  cloud1,
+  cloud2,
+  cloud3,
+  cloud4,
+  cloud5,
+  cloud6,
+  cloud7,
+  cloud8,
+  cloud9,
+  cloud10,
+  cloud11,
+  cloud12
 }
 
 export const LOCATIONS = [{

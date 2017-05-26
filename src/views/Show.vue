@@ -2,7 +2,7 @@
   <page>
     <div class="c-show">
       <show-cover></show-cover>
-      <show-earth></show-earth>
+      <show-earth :target="target"></show-earth>
     </div>
   </page>
 </template>
@@ -18,6 +18,10 @@ export default {
     'page': Page,
     'show-cover': ShowCover,
     'show-earth': ShowEarth
+  },
+
+  props: {
+    target: String
   }
 }
 </script>
