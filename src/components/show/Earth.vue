@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Earth from '@/assets/js/earth'
+import Scene from '@/assets/js/earth/scene'
 
 export default {
   earth: null,
@@ -18,14 +18,14 @@ export default {
     return {}
   },
 
-  watch: {
+  /* watch: {
     target (value) {
       this.moveTo(value)
     }
-  },
+  }, */
 
   mounted () {
-    this.$options.earth = window.earth = new Earth(this.$refs.mountNode)
+    this.$options.earth = window.earth = new Scene(this.$refs.mountNode)
   },
 
   methods: {

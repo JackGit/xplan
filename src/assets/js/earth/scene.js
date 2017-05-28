@@ -1,25 +1,31 @@
-import * as THREE from 'three'
+const THREE = require('three')
+const OrbitControls = require('three-orbit-controls')(THREE)
+const EffectComposer = require('three-effectcomposer')(THREE)
+
 import TWEEN from 'tween.js'
-import { PAGE_WIDTH, PAGE_HEIGHT, IMAGE_URLS, LOCATIONS } from '@/assets/js/constants'
+import * as Glow from './glow'
+import { createAmbientLight, createSpotLight } from './lights'
+import { createEarth } from './earth'
+import { createCloud } from './cloud'
+import { createLocationSprite } from './locations'
+import { PAGE_WIDTH, PAGE_HEIGHT, LOCATIONS } from '@/assets/js/constants'
 
 const WIDTH = PAGE_WIDTH
 const HEIGHT = PAGE_HEIGHT
-const OrbitControls = require('three-orbit-controls')(THREE)
 
-let loader = new THREE.TextureLoader()
-
-export default class Earth {
+export default class Scene {
   constructor (el, options) {
-    this.container = typeof el === 'string' ? document.getElementOf(el) : el
+    this.container = typeof el === 'string' ? document.getElementById(el) : el
 
+    this.width = WIDTH * 2
+    this.height = HEIGHT * 2
     this.camera = null
     this.renderer = null
     this.controller = null
 
     this.scene = null
     this.earthGroup = null
-    this.spriteGroup = null
-    this.earth = null
+    this.locationGroup = null
     this.cloud = null
 
     this.autoRotate = true
@@ -34,14 +40,15 @@ export default class Earth {
   }
 
   _init () {
+    this._createRenderer()
     this._createScene()
     this._createCamera()
     this._createLight()
     this._createEarth()
     this._createCloud()
-    this._createLabels()
+    this._createLocations()
+    this._createOutGlow()
     this._createController()
-    this._createRenderer()
 
     this._loop()
   }
@@ -57,91 +64,42 @@ export default class Earth {
   }
 
   _createCamera () {
-    let camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 0.1, 1000)
+    let camera = new THREE.PerspectiveCamera(40, this.width / this.height, 0.1, 1000)
     camera.position.set(0, 0, -28)
     this.scene.add(camera) // this is required cause there is a light under camera
     this.camera = camera
   }
 
   _createLight () {
-    let ambientLight = new THREE.AmbientLight(0x393939, 0.5)
-    let spotLight = new THREE.SpotLight(0xffffff, 1.5)
-
-    spotLight.position.set(-26, 11, -11)
-    spotLight.angle = 0.2
-    spotLight.castShadow = false
-    spotLight.penumbra = 0.4
-    spotLight.distance = 124
-    spotLight.decay = 1
-    spotLight.shadow.camera.near = 50
-    spotLight.shadow.camera.far = 200
-    spotLight.shadow.camera.fov = 35
-    spotLight.shadow.mapSize.height = 1024
-    spotLight.shadow.mapSize.width = 1024
-
-    this.scene.add(ambientLight)
-    this.camera.add(spotLight)  // fixed light direction by adding it as child of camera
+    this.scene.add(createAmbientLight())
+    this.camera.add(createSpotLight())  // fixed light direction by adding it as child of camera
   }
 
   _createScene () {
     this.scene = new THREE.Scene()
+    this.earthGroup = new THREE.Group()
+    this.locationGroup = new THREE.Group()
+
+    this.scene.add(this.earthGroup)
+    this.earthGroup.add(this.locationGroup)
   }
 
   _createEarth () {
-    let group = new THREE.Group()
-    let material = new THREE.MeshPhongMaterial({
-      map: loader.load(IMAGE_URLS.earth),
-      bumpMap: loader.load(IMAGE_URLS.earthBump),
-      bumpScale: 0.15,
-      specularMap: loader.load(IMAGE_URLS.earthSpec),
-      specular: new THREE.Color('#909090'),
-      shininess: 5,
-      transparent: true
-    })
-    let sphere = new THREE.SphereGeometry(5, 32, 32)
-    let earth = new THREE.Mesh(sphere, material)
-
-    group.add(earth)
-    this.scene.add(group)
-    this.earthGroup = group
-    this.earth = earth
+    let earth = createEarth()
+    this.earthGroup.add(earth)
   }
 
   _createCloud () {
-    let sphere = new THREE.SphereGeometry(5.2, 32, 32)
-    let material = new THREE.MeshPhongMaterial({
-      map: loader.load(IMAGE_URLS.earthCloud),
-      transparent: true,
-      opacity: 1,
-      blending: THREE.AdditiveBlending
-    })
-    let cloud = new THREE.Mesh(sphere, material)
-
+    let cloud = createCloud()
     this.earthGroup.add(cloud)
     this.cloud = cloud
   }
 
-  _createLabels () {
-    let group = new THREE.Group()
+  _createLocations () {
     LOCATIONS.forEach(location => {
-      let sprite = this._createSprite(location)
-      group.add(sprite)
+      let sprite = createLocationSprite(location)
+      this.locationGroup.add(sprite)
     })
-
-    this.earthGroup.add(group)
-    this.spriteGroup = group
-  }
-
-  _createSprite (location) {
-    let spriteMaterial = new THREE.SpriteMaterial({
-      map: loader.load(location.labelImage),
-      color: 0xffffff,
-      fog: true
-    })
-    let sprite = new THREE.Sprite(spriteMaterial)
-    sprite.position.set(location.position[0], location.position[1], location.position[2])
-    sprite.scale.set(1.4, 1.4, 1.4)
-    return sprite
   }
 
   _createRenderer () {
@@ -154,12 +112,39 @@ export default class Earth {
 
     renderer.setClearColor(0x000000, 0)
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setSize(WIDTH * 2, HEIGHT * 2)
+    renderer.setSize(this.width, this.height)
     renderer.domElement.style.position = 'relative'
-    renderer.domElement.style.width = WIDTH + 'px'
-    renderer.domElement.style.height = HEIGHT + 'px'
+    renderer.domElement.style.width = this.width / 2 + 'px'
+    renderer.domElement.style.height = this.height / 2 + 'px'
     container.appendChild(renderer.domElement)
     this.renderer = renderer
+  }
+
+  _createOutGlow () {
+    this.blurScene = new THREE.Scene()
+    this.glowGroup = Glow.createOuterGlow()
+    this.blurScene.add(this.glowGroup)
+
+    let blurRenderTarget = new THREE.WebGLRenderTarget(this.width, this.height, {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      format: THREE.RGBAFormat,
+      stencilBuffer: true
+    })
+
+    let blurRenderPass = new EffectComposer.RenderPass(this.blurScene, this.camera)
+    let sceneRenderPass = new EffectComposer.RenderPass(this.scene, this.camera)
+
+    this.blurComposer = new EffectComposer(this.renderer, blurRenderTarget)
+    this.blurComposer.addPass(blurRenderPass)
+    this.sceneComposer = new EffectComposer(this.renderer, blurRenderTarget)
+    this.sceneComposer.addPass(sceneRenderPass)
+
+    let effectBlend = new EffectComposer.ShaderPass(Glow.AdditiveBlendShader, 'tSampler1')
+    effectBlend.uniforms['tSampler2'].value = this.blurComposer.renderTarget2.texture
+    effectBlend.renderToScreen = true
+
+    this.sceneComposer.addPass(effectBlend)
   }
 
   _loop () {
@@ -168,7 +153,7 @@ export default class Earth {
   }
 
   _render () {
-    let rotationSpeed = this.rotationSpeed
+    /* let rotationSpeed = this.rotationSpeed
     let cloudSpeed = this.cloudSpeed
 
     if (this.autoRotate) {
@@ -176,18 +161,25 @@ export default class Earth {
       this.camera.position.z = this.camera.position.z * Math.cos(rotationSpeed) + this.camera.position.x * Math.sin(rotationSpeed)
     }
 
-    if (this.tween) {
-      TWEEN.update()
-    }
+    // TWEEN.update()
 
     this.cloud.rotation.y += cloudSpeed
 
-    this.controller.update()
-    this.renderer.render(this.scene, this.camera)
+    this.controller.update() */
+    // this.renderer.render(this.scene, this.camera)
+
+    if (this.isStart) {
+      this.blurComposer.render()
+      this.sceneComposer.render()
+    } else {
+      this.renderer.render(this.scene, this.camera)
+      this.isStart = true
+    }
   }
 
   _tweenTo (position, duration = 1000, easing = TWEEN.Easing.Linear.None) {
     let camera = this.camera
+    let that = this
 
     this.tween = new TWEEN.Tween({
       x: camera.position.x,
@@ -200,7 +192,7 @@ export default class Earth {
     }, duration).start()
 
     this.tween.onUpdate(function () {
-      camera.position.set(this.x, this.y, this.z)
+      that.setCamera(this.x, this.y, this.z)
     })
     this.tween.onComplete(() => {
       this.isTweening = false
@@ -215,6 +207,22 @@ export default class Earth {
     if (location) {
       this._tweenTo(isNear ? location.cameraNearPosition : location.cameraFarPosition, duration, easing)
       this.onTweenComplete = onComplete
+    }
+  }
+
+  setCamera () {
+    if (arguments.length === 3) {
+      this.camera.position.set(arguments[0], arguments[1], arguments[2])
+    } else {
+      this.camera.position.set(arguments[0].x, arguments[0].y, arguments[0].z)
+    }
+  }
+
+  cameraPosition () {
+    return {
+      x: this.camera.position.x,
+      y: this.camera.position.y,
+      z: this.camera.position.z
     }
   }
 

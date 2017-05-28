@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <loading :progress="progress" v-show="loading"></loading>
+    <!--<loading :progress="progress" v-show="loading"></loading>
     <show v-if="!loading" :target="target"></show>
     <meteor v-if="!loading"></meteor>
-    <clouds :play="playCloud" v-if="!loading"></clouds>
+    <clouds :play="playCloud" v-if="!loading"></clouds>-->
   </div>
 </template>
 
@@ -15,6 +15,7 @@ import Show from '@/views/Show'
 import Meteor from '@/components/Meteor'
 import Clouds from '@/components/Clouds'
 import { IMAGE_URLS } from '@/assets/js/constants'
+import Scene from '@/assets/js/earth/scene'
 
 export default {
   name: 'app',
@@ -35,9 +36,10 @@ export default {
   },
 
   mounted () {
-    this.initLoader()
+    // this.initLoader()
+    window.earth = new Scene('app')
     setTimeout(() => {
-      this.target = 'greenland'
+      // this.target = 'greenland'
     }, 2000)
     /* setInterval(() => {
       if (this.playCloud === 'in') {
