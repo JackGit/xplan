@@ -1,4 +1,4 @@
-import { AmbientLight, SpotLight } from 'three'
+import { AmbientLight, SpotLight, DirectionalLight } from 'three'
 
 export function createAmbientLight () {
   return new AmbientLight(0x393939, 0.5)
@@ -18,4 +18,10 @@ export function createSpotLight () {
   spotLight.shadow.mapSize.height = 1024
   spotLight.shadow.mapSize.width = 1024
   return spotLight
+}
+
+export function createDirectionalLight () {
+  let light = new DirectionalLight(0xffffff, 1)
+  light.position.set(5, 3, 5)
+  return light
 }

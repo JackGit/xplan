@@ -18,11 +18,11 @@ export default {
     return {}
   },
 
-  /* watch: {
+  watch: {
     target (value) {
       this.moveTo(value)
     }
-  }, */
+  },
 
   mounted () {
     this.$options.earth = window.earth = new Scene(this.$refs.mountNode)

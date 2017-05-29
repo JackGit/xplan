@@ -35,7 +35,6 @@ export default class Scene {
     this.isTweening = false
 
     this.onTweenComplete = null
-
     this._init()
   }
 
@@ -111,7 +110,7 @@ export default class Scene {
     let container = this.container
 
     renderer.setClearColor(0x000000, 0)
-    renderer.setPixelRatio(window.devicePixelRatio)
+    // renderer.setPixelRatio(window.devicePixelRatio) // this line would make FPS decreased at 30 for mobile device
     renderer.setSize(this.width, this.height)
     renderer.domElement.style.position = 'relative'
     renderer.domElement.style.width = this.width / 2 + 'px'
@@ -149,11 +148,12 @@ export default class Scene {
 
   _loop () {
     requestAnimationFrame(this._loop.bind(this))
+    this._animate()
     this._render()
   }
 
-  _render () {
-    /* let rotationSpeed = this.rotationSpeed
+  _animate () {
+    let rotationSpeed = this.rotationSpeed
     let cloudSpeed = this.cloudSpeed
 
     if (this.autoRotate) {
@@ -161,13 +161,13 @@ export default class Scene {
       this.camera.position.z = this.camera.position.z * Math.cos(rotationSpeed) + this.camera.position.x * Math.sin(rotationSpeed)
     }
 
-    // TWEEN.update()
+    TWEEN.update()
 
     this.cloud.rotation.y += cloudSpeed
+    this.controller.update()
+  }
 
-    this.controller.update() */
-    // this.renderer.render(this.scene, this.camera)
-
+  _render () {
     if (this.isStart) {
       this.blurComposer.render()
       this.sceneComposer.render()
