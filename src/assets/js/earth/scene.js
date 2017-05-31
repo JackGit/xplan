@@ -27,6 +27,7 @@ export default class Scene {
     this.earthGroup = null
     this.locationGroup = null
     this.cloud = null
+    this.hasGlow = false
 
     this.autoRotate = true
     this.rotationSpeed = 0.001
@@ -144,6 +145,7 @@ export default class Scene {
     effectBlend.renderToScreen = true
 
     this.sceneComposer.addPass(effectBlend)
+    this.hasGlow = true
   }
 
   _loop () {
@@ -168,7 +170,7 @@ export default class Scene {
   }
 
   _render () {
-    if (this.isStart) {
+    if (this.isStart && this.hasGlow) {
       this.blurComposer.render()
       this.sceneComposer.render()
     } else {

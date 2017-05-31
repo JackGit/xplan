@@ -3,7 +3,7 @@ import { getTexture } from '@/assets/js/utils'
 
 export function createLocationSprite (location) {
   let spriteMaterial = new SpriteMaterial({
-    map: getTexture(location.labelImage),
+    map: getTexture(location.imageName),
     color: 0xffffff,
     fog: true
   })
