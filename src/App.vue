@@ -3,7 +3,7 @@
     <loading :progress="progress" v-show="loading"></loading>
     <show v-if="!loading" :target="target"></show>
     <meteor v-if="!loading"></meteor>
-    <clouds :play="playCloud" v-if="!loading"></clouds>
+    <clouds :play="playCloud" v-if="false"></clouds>
   </div>
 </template>
 
@@ -53,7 +53,6 @@ export default {
       loader.onComplete.add(() => {
         setTimeout(() => {
           this.loading = false
-          this.target = 'greenland'
         }, 500)
       })
 

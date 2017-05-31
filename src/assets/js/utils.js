@@ -18,7 +18,7 @@ export function getTexture (imageName) {
     : null
   let imageURL = IMAGE_URLS[imageName]
 
-  if (image) {
+  if (image && false) {
     let isJPEG = imageURL.endsWith('.jpg') || imageURL.endsWith('.jpeg')
     let texture = new Texture()
     texture.image = image
