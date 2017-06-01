@@ -117,7 +117,6 @@ class ZoomingState extends BaseState {
       this.controller.showCloud()
       this.controller.changeState('diving')
     } else {
-      this.controller.hideCloud()
       this.controller.changeState('idle')
     }
     this.tween = null
@@ -158,24 +157,34 @@ class ZoomingState extends BaseState {
 class DivingState extends BaseState {
   constructor (controller) {
     super(controller)
+    this.count = 0
+  }
+
+  _throttle (fn) {
+    if (this.count % 3 === 0) {
+      fn && fn()
+      this.count = 0
+    }
+    this.count++
   }
 
   forward () {
     let cloud = this.controller.cloud
     if (cloud.currentFrameIndex === cloud.images.length - 1) {
       this.controller.changeState('revealed')
+      this.controller.hideCloud()
     } else {
-      cloud.next()
+      this._throttle(_ => cloud.next())
     }
   }
 
   backward () {
     let cloud = this.controller.cloud
     if (cloud.currentFrameIndex === 0) {
-      this.controller.changeState('diving')
-      this.controller.showCloud()
+      this.controller.changeState('zooming')
+      this.controller.hideCloud()
     } else {
-      cloud.prev()
+      this._throttle(_ => cloud.prev())
     }
   }
 }
@@ -188,6 +197,7 @@ class RevealedState extends BaseState {
 
   backward () {
     this.controller.changeState('diving')
+    this.controller.showCloud()
   }
 }
 
@@ -225,6 +235,7 @@ export default class Controller {
 
   showCloud () {
     this.cloud.el.style.display = 'block'
+
   }
 
   hideCloud () {

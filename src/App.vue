@@ -3,7 +3,8 @@
     <loading :progress="progress" v-show="loading"></loading>
     <show v-if="!loading" :target="target"></show>
     <meteor v-if="!loading"></meteor>
-    <clouds v-if="!loading" :play="playCloud"></clouds>
+    <clouds v-if="!loading"></clouds>
+    <background-video></background-video>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import Loading from '@/views/Loading'
 import Show from '@/views/Show'
 import Meteor from '@/components/Meteor'
 import Clouds from '@/components/Clouds'
+import BackgroundVideo from '@/components/BackgroundVideo'
 import { IMAGE_URLS } from '@/assets/js/constants'
 
 export default {
@@ -22,14 +24,14 @@ export default {
     'loading': Loading,
     'show': Show,
     'meteor': Meteor,
-    'clouds': Clouds
+    'clouds': Clouds,
+    'background-video': BackgroundVideo
   },
 
   data () {
     return {
       progress: 13,
       loading: true,
-      playCloud: '',
       target: ''
     }
   },

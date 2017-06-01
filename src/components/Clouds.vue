@@ -1,8 +1,6 @@
 <template>
   <div class="c-clouds">
-    <transition name="fade">
-      <div ref="container" v-show="show"></div>
-    </transition>
+    <div ref="container" style="display: none"></div>
   </div>
 </template>
 
@@ -18,32 +16,8 @@ function getCloudImages (resources) {
 export default {
   imageSprite: null,
 
-  props: {
-    play: {
-      type: String,
-      default: ''
-    }
-  },
-
-  data () {
-    return {
-      show: false
-    }
-  },
-
   mounted () {
     this.createImageSprite()
-  },
-
-  watch: {
-    play (value) {
-      if (value === 'in') {
-        this.zoomIn()
-      }
-      if (value === 'out') {
-        this.zoomOut()
-      }
-    }
   },
 
   methods: {
@@ -54,33 +28,10 @@ export default {
         interval: 80,
         width: window.innerWidth,
         height: window.innerHeight,
-        images: images,
-        onLoaded () { console.log('loaded') },
-        onUpdate () {
-          if (
-            this.currentFrameIndex === 11 && this.direction === 'forward' ||
-            this.currentFrameIndex === 1 && this.direction === 'backward'
-          ) {
-            that.show = false
-          }
-        }
+        images: images
       })
 
       window.is = this.$options.imageSprite = imageSprite
-    },
-
-    zoomIn () {
-      if (this.$options.imageSprite) {
-        this.show = true
-        this.$options.imageSprite.play({ toFrame: 12 })
-      }
-    },
-
-    zoomOut () {
-      if (this.$options.imageSprite) {
-        this.show = true
-        this.$options.imageSprite.play({ toFrame: 0, direction: 'backward' })
-      }
     }
   }
 }
