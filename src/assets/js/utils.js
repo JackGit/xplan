@@ -28,3 +28,7 @@ export function getTexture (imageName) {
     return loader.load(imageURL)
   }
 }
+
+export function isSamePosition (position1, position2, accuracy = 0.01) {
+  return Math.abs(position1.x - position2.x) < accuracy && Math.abs(position1.y - position2.y) < accuracy && Math.abs(position1.z - position2.z) < accuracy
+}

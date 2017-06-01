@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import Scene from '@/assets/js/earth/scene'
+import Earth from '@/assets/js/earth'
+import Controller from '@/assets/js/controller'
 
 export default {
   earth: null,
@@ -19,7 +20,9 @@ export default {
   },
 
   mounted () {
-    this.$options.earth = window.earth = new Scene(this.$refs.mountNode)
+    let earth = new Earth(this.$refs.mountNode)
+    this.$options.earth = window.earth = earth
+    setTimeout(() => window.controller = new Controller(earth, window.is), 1000)
   }
 }
 </script>

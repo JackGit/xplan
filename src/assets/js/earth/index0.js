@@ -13,7 +13,7 @@ import { PAGE_WIDTH, PAGE_HEIGHT, LOCATIONS } from '@/assets/js/constants'
 const WIDTH = PAGE_WIDTH
 const HEIGHT = PAGE_HEIGHT
 
-export default class Scene {
+export default class Earth {
   constructor (el, options) {
     this.container = typeof el === 'string' ? document.getElementById(el) : el
 
@@ -163,7 +163,7 @@ export default class Scene {
       this.camera.position.z = this.camera.position.z * Math.cos(rotationSpeed) + this.camera.position.x * Math.sin(rotationSpeed)
     }
 
-    TWEEN.update()
+    // TWEEN.update()
 
     this.cloud.rotation.y += cloudSpeed
     this.controller.update()

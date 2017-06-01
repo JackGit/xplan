@@ -3,7 +3,7 @@
     <loading :progress="progress" v-show="loading"></loading>
     <show v-if="!loading" :target="target"></show>
     <meteor v-if="!loading"></meteor>
-    <clouds :play="playCloud" v-if="false"></clouds>
+    <clouds v-if="!loading" :play="playCloud"></clouds>
   </div>
 </template>
 
