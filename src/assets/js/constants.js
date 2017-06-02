@@ -20,9 +20,18 @@ import cloud9 from '@/assets/images/kf_cloud_00009.jpg'
 import cloud10 from '@/assets/images/kf_cloud_00010.jpg'
 import cloud11 from '@/assets/images/kf_cloud_00011.jpg'
 import cloud12 from '@/assets/images/kf_cloud_00012.jpg'
+import videoSprite from '@/assets/videos/video_sprite.mp4'
+import audioSprite from '@/assets/sounds/music_sprite.mp3'
+import backgroundAudio from '@/assets/sounds/music_bg.mp3'
 
 export const PAGE_WIDTH = 375
 export const PAGE_HEIGHT = 600
+
+export const MEDIA_URLS = {
+  videoSprite,
+  audioSprite,
+  backgroundAudio
+}
 
 export const IMAGE_URLS = {
   earth: imageEarth,

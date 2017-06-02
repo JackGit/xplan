@@ -1,7 +1,5 @@
 import { LOCATIONS } from '@/assets/js/constants'
-import { isSamePosition } from '@/assets/js/utils'
 import TWEEN from 'tween.js'
-window.TWEEN = TWEEN
 
 /* BaseState class */
 class BaseState {
@@ -14,7 +12,12 @@ class BaseState {
   backward () {}
 }
 
-/* IdleState class */
+/**
+ * IdleState class
+ *
+ * Foward: go the next state, which is RotatingState
+ * Backward: no backward
+ */
 class IdleState extends BaseState {
   constructor (controller) {
     super(controller)
@@ -25,7 +28,12 @@ class IdleState extends BaseState {
   }
 }
 
-/* RotatingState class */
+/**
+ * RotatingState class
+ *
+ * Forward: if reaches the cameraFarPosition, then move to the next state, which is ZoomingState; otherwise, keep set camera till reaches the target
+ * Backward: back to IdleState util the rotation completed
+ */
 class RotatingState extends BaseState {
   constructor (controller) {
     super(controller)
@@ -33,14 +41,6 @@ class RotatingState extends BaseState {
   }
 
   forward () {
-    /* let earth = this.controller.earth
-    let target = this.controller.target
-
-    if (isSamePosition(earth.camera.position, target.position)) {
-      this.controller.changeState('zooming')
-    } else {
-      earth.setCamera()
-    } */
     let that = this
     let earth = this.controller.earth
     let target = this.controller.target
@@ -71,7 +71,12 @@ class RotatingState extends BaseState {
   }
 }
 
-/* ZoomingState class */
+/**
+ * ZoomingState class
+ *
+ * Forward: from current camera position to the camera near position of the target, once reach the position, go to the next state, which is DivingState
+ * Backward: from current camera position to the camera far position of the target, once reach the position, go to the IdleState
+ */
 class ZoomingState extends BaseState {
   constructor (controller) {
     super(controller)
@@ -114,7 +119,6 @@ class ZoomingState extends BaseState {
 
   _handleTweenComplete () {
     if (this.direction === 'forward') {
-      this.controller.showCloud()
       this.controller.changeState('diving')
     } else {
       this.controller.changeState('idle')
@@ -123,14 +127,6 @@ class ZoomingState extends BaseState {
   }
 
   forward () {
-    /* let earth = this.controller.earth
-    let target = this.controller.target
-
-    if (isSamePosition(earth.camera.position, target.cameraFarPosition)) {
-      this.controller.changeState('diving')
-    } else {
-      earth.setCamera()
-    } */
     this._setDirection('forward')
     if (this.tween) {
       TWEEN.update()
@@ -138,14 +134,6 @@ class ZoomingState extends BaseState {
   }
 
   backward () {
-    /* let earth = this.controller.earth
-    let target = this.controller.target
-
-    if (isSamePosition(earth.camera.position, target.cameraNearPosition)) {
-      this.controller.changeState('idle')
-    } else {
-      earth.setCamera()
-    } */
     this._setDirection('backward')
     if (this.tween) {
       TWEEN.update()
@@ -153,7 +141,12 @@ class ZoomingState extends BaseState {
   }
 }
 
-/* DivingState class */
+/**
+ * DivingState class
+ *
+ * Forward: from current frame index to the end of frame index, once reach the end, go to the next state, which is PresentingState
+ * Backward: from current frame index to the beginning of the frame index, once reach the beginning, go to the previous state, which is DivingState
+ */
 class DivingState extends BaseState {
   constructor (controller) {
     super(controller)
@@ -171,8 +164,7 @@ class DivingState extends BaseState {
   forward () {
     let cloud = this.controller.cloud
     if (cloud.currentFrameIndex === cloud.images.length - 1) {
-      this.controller.changeState('revealed')
-      this.controller.hideCloud()
+      this.controller.changeState('presenting')
     } else {
       this._throttle(_ => cloud.next())
     }
@@ -182,22 +174,25 @@ class DivingState extends BaseState {
     let cloud = this.controller.cloud
     if (cloud.currentFrameIndex === 0) {
       this.controller.changeState('zooming')
-      this.controller.hideCloud()
     } else {
       this._throttle(_ => cloud.prev())
     }
   }
 }
 
-/* RevealedState class */
-class RevealedState extends BaseState {
+/**
+ * PresentingState class
+ *
+ * Forward: no more forward actions
+ * Backward: go to the previous state, which is DivingState
+ */
+class PresentingState extends BaseState {
   constructor (controller) {
     super(controller)
   }
 
   backward () {
     this.controller.changeState('diving')
-    this.controller.showCloud()
   }
 }
 
@@ -235,11 +230,18 @@ export default class Controller {
 
   showCloud () {
     this.cloud.el.style.display = 'block'
-
   }
 
   hideCloud () {
     this.cloud.el.style.display = 'none'
+  }
+
+  showVideo () {
+    document.getElementById('video').style.display = 'block'
+  }
+
+  hideVideo () {
+    document.getElementById('video').style.display = 'none'
   }
 
   setTarget (locationName) {
@@ -257,13 +259,18 @@ export default class Controller {
         this.state = new RotatingState(this);
         break;
       case 'zooming':
+        this.hideCloud()
         this.state = new ZoomingState(this);
         break;
       case 'diving':
+        this.showCloud()
+        this.hideVideo()
         this.state = new DivingState(this);
         break;
-      case 'revealed':
-        this.state = new RevealedState(this);
+      case 'presenting':
+        this.hideCloud()
+        this.showVideo()
+        this.state = new PresentingState(this);
         break;
       default:
         this.state = new BaseState(this);
