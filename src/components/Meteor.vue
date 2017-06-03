@@ -1,9 +1,13 @@
 <template>
-  <div class="c-meteor">
-    meteor
-  </div>
+  <div class="c-meteor"></div>
 </template>
 
 <script>
-export default {}
+import Meteor from '@/assets/js/meteor'
+
+export default {
+  mounted () {
+    new Meteor(this.$el)
+  }
+}
 </script>

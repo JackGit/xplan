@@ -28,9 +28,20 @@ export default {
   },
 
   data () {
-    let map = ['0px 0px', '0px -19px', '0px -38px', '0px -57px', '0px -76px']
     return {
-      backgroundPosition: map[this.coordIndex]
+      backgroundPosition: ''
+    }
+  },
+
+  watch: {
+    coordIndex (value) {
+      this.setBackgroundPosition(value)
+    }
+  },
+
+  methods: {
+    setBackgroundPosition (index) {
+      this.backgroundPosition = ['0px 0px', '0px -19px', '0px -38px', '0px -57px', '0px -76px'][index]
     }
   }
 }

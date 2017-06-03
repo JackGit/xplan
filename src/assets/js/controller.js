@@ -49,7 +49,6 @@ class RotatingState extends BaseState {
     let target = this.controller.target
 
     if (this.tween) {
-      console.log('RotatingState update')
       TWEEN.update()
     } else {
       this.tween = new TWEEN.Tween(earth.cameraPosition()).to({
@@ -211,6 +210,8 @@ export default class Controller {
     this.cloud = options.cloud
     this.audioSprite = options.audioSprite
     this.videoSprite = options.videoSprite
+    this.onStateChange = options.onStateChange
+    this.onTargetChange = options.onTargetChange
 
     this.state = new IdleState(this)
     this.touchDown = false
@@ -297,6 +298,7 @@ export default class Controller {
   setTarget (locationName) {
     this.target = LOCATIONS.filter(location => location.name === locationName)[0]
     this.playSprite('audio')
+    this.onTargetChange && this.onTargetChange()
   }
 
   changeState (stateName) {
@@ -319,5 +321,6 @@ export default class Controller {
       default:
         this.state = new BaseState(this);
     }
+    this.onStateChange && this.onStateChange(stateName)
   }
 }

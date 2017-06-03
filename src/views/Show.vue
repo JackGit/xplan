@@ -1,12 +1,12 @@
 <template>
   <page>
     <div class="c-show">
-      <show-cover :show-tips="showTips" :show-coord="true" :coord-index="2"></show-cover>
+      <show-cover :show-tips="showTips" :show-coord="showCoord" :coord-index="coordIndex"></show-cover>
       <show-earth ref="earth" :target="target"></show-earth>
       <show-clouds ref="cloudSprite"></show-clouds>
       <show-video-sprite ref="videoSprite"></show-video-sprite>
       <show-audio-sprite ref="audioSprite" @spriteend="handleAudioSpriteEnd"></show-audio-sprite>
-      <show-actions :show-press-button="true" :show-xplan-button="false" @hold="handleHold" @release="handleRelease"></show-actions>
+      <show-actions :show-press-button="!showTips" :show-xplan-button="showXplanButton && revealed" @hold="handleHold" @release="handleRelease"></show-actions>
     </div>
   </page>
 </template>
@@ -41,7 +41,11 @@ export default {
 
   data () {
     return {
-      showTips: true
+      showTips: true,
+      showCoord: false,
+      showXplanButton: false,
+      coordIndex: -1,
+      revealed: false
     }
   },
 
@@ -60,15 +64,17 @@ export default {
     handleRelease () {
       controller.end()
     },
-    handleDocumentTouchMove () {
+    handleDocumentTouchMove (e) {
       if (this.showTips) {
         this.showTips = false
       }
+      e.preventDefault()
     },
     handleAudioSpriteEnd () {
       controller.nextTarget()
     },
     createController () {
+      let that = this
       let earth = this.$refs.earth.$options.earth
       let cloudSprite = this.$refs.cloudSprite.$options.imageSprite
       let videoSprite = this.$refs.videoSprite.$options.videoSprite
@@ -77,7 +83,24 @@ export default {
         earth: earth,
         cloud: cloudSprite,
         videoSprite,
-        audioSprite
+        audioSprite,
+        onTargetChange () {
+          that.showCoord = false
+        },
+        onStateChange (stateName) {
+          if (stateName === 'idle') {
+            that.showXplanButton = true
+          } else {
+            that.showXplanButton = false
+          }
+          if (stateName === 'zooming') {
+            that.showCoord = true
+            that.coordIndex = controller.target.coordSpriteIndex
+          }
+          if (stateName === 'presenting') {
+            that.revealed = true
+          }
+        }
       })
       setTimeout(_ => controller.nextTarget(), 1000)
       this.$options.controller = window.controller = controller

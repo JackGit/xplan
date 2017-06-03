@@ -1,8 +1,8 @@
 <template>
   <div class="c-actions">
     <span :class="{'c-actions__longPressText': true, 'is-active': showPressButton}"></span>
-    <span :class="{'c-actions__longPress': true, 'is-active': showPressButton}" @touchstart="handleStart" @touchend="handleEnd" @touchcancel="handleEnd"></span>
-    <span :class="{'c-actions__xplan': true, 'is-active': showXplanButton}"></span>
+    <span :class="{'c-actions__longPress': true, 'is-active': showPressButton}" @touchstart.prevent="handleStart" @touchend="handleEnd" @touchcancel="handleEnd"></span>
+    <span :class="{'c-actions__xplan': true, 'is-active': showXplanButton}" @click="handleClickXPlan"></span>
   </div>
 </template>
 
@@ -20,6 +20,9 @@ export default {
 
     handleEnd () {
       this.$emit('release')
+    },
+    handleClickXPlan () {
+      console.log('show xplan')
     }
   }
 }
