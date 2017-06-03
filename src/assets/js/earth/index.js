@@ -61,7 +61,8 @@ export default class Earth {
 
   _createCamera () {
     let camera = new THREE.PerspectiveCamera(40, this.width / this.height, 0.1, 1000)
-    camera.position.set(0, 0, -28)
+    // camera.position.set(0, 0, -28)
+    camera.position.set(3.55, 0, -328)
     this.scene.add(camera) // this is required cause there is a light under camera
     this.camera = camera
   }

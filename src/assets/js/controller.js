@@ -14,6 +14,32 @@ class BaseState {
 }
 
 /**
+ * IdleState EnteringState
+ *
+ * Foward: rotate the earth for entering animation, then go to the next state, which is IdleState
+ * Backward: no backward
+ */
+class EnteringState extends BaseState {
+  constructor (controller) {
+    super(controller)
+    this.tween = new TWEEN.Tween({
+      x: 3.55, y: 0, z: -328, ry: 0
+    }).to({
+      x: 0, y: 0, z: -28, ry: -10
+    }, 1600).onUpdate(function () {
+      controller.earth.setCamera(this.x, this.y, this.z)
+      controller.earth.earthGroup.rotation.y = this.ry
+    }).onComplete(function () {
+      controller.changeState('idle')
+    }).easing(TWEEN.Easing.Cubic.Out).start()
+  }
+
+  forward () {
+    TWEEN.update()
+  }
+}
+
+/**
  * IdleState class
  *
  * Foward: go the next state, which is RotatingState
@@ -22,7 +48,11 @@ class BaseState {
 class IdleState extends BaseState {
   constructor (controller) {
     super(controller)
-    controller.playSprite('audio')
+    // don't play audio sprite if EnteringState => IdleState
+    // cause nextTarget() will play the audio
+    if (!(controller.state instanceof EnteringState)) {
+      controller.playSprite('audio')
+    }
   }
 
   forward () {
@@ -213,7 +243,7 @@ export default class Controller {
     this.onStateChange = options.onStateChange
     this.onTargetChange = options.onTargetChange
 
-    this.state = new IdleState(this)
+    this.state = new EnteringState(this)
     this.touchDown = false
 
     this.target = null
@@ -237,6 +267,10 @@ export default class Controller {
   }
 
   _animate () {
+    if (this.state instanceof EnteringState) {
+      this.state.forward()
+    }
+
     if (this.touchDown && this.target) {
       this.state.forward()
     } else {
@@ -298,6 +332,7 @@ export default class Controller {
   setTarget (locationName) {
     this.target = LOCATIONS.filter(location => location.name === locationName)[0]
     this.playSprite('audio')
+    this.videoSprite.set(locationName)
     this.onTargetChange && this.onTargetChange()
   }
 
