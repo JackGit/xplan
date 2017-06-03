@@ -22,7 +22,6 @@ export default {
 
   methods: {
     createImageSprite () {
-      let that = this
       let images = getCloudImages(window.loader.resources)
       let imageSprite = new ImageSprite(this.$refs.container, {
         interval: 80,
@@ -31,7 +30,7 @@ export default {
         images: images
       })
 
-      window.is = this.$options.imageSprite = imageSprite
+      this.$options.imageSprite = imageSprite
     }
   }
 }

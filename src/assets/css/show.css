@@ -5,7 +5,7 @@
 }
 
 /* show cover */
-.c-showCover {
+.c-earthCover {
   position: absolute;
   top: 0;
   left: 0;
@@ -13,7 +13,7 @@
   height: 100%;
   z-index: 2;
 }
-.c-showCover__cover {
+.c-earthCover__cover {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -27,7 +27,7 @@
   background-position: center center;
   pointer-events: none;
 }
-.c-showCover__tips {
+.c-earthCover__tips {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -39,7 +39,7 @@
   background-size: cover;
   background-repeat: no-repeat;
 }
-.c-showCover__hand {
+.c-earthCover__hand {
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -50,7 +50,7 @@
   background-size: cover;
   animation: moveHand 2s linear infinite;
 }
-.c-showCover__coord {
+.c-earthCover__coord {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -64,13 +64,100 @@
 }
 
 /* show earth */
-.c-showEarth {
+.c-earth {
   position: absolute;
   top: -40px; /* to let earth right at the center of cover image */
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
+}
+
+/* background video */
+.c-videoSprite {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.c-videoSprite__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+/* show actions */
+.c-actions {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+}
+
+.c-actions__longPress {
+  position: absolute;
+  display: inline-block;
+  left: 138px;
+  bottom: 30px;
+  width: 99px;
+  height: 133px;
+  opacity: 0;
+  background-image: url(../images/btn_show.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: opacity .5s ease;
+}
+
+.c-actions__longPress.is-active {
+  opacity: 1;
+  animation: twinkle 2s linear infinite;
+}
+
+.c-actions__longPressText {
+  position: absolute;
+  display: inline-block;
+  left: 146px;
+  bottom: 136px;
+  width: 83px;
+  height: 27px;
+  opacity: 0;
+  background-image: url(../images/btn_show_text.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: opacity .5s ease;
+}
+
+.c-actions__longPressText.is-active {
+  opacity: 1;
+}
+
+.c-actions__xplan {
+  position: absolute;
+  display: inline-block;
+  opacity: 0;
+  right: 55px;
+  bottom: 52px;
+  width: 66px;
+  height: 70px;
+  background-image: url(../images/btn_end.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: opacity .5s ease;
+}
+
+.c-actions__xplan.is-active {
+  opacity: 1;
 }
 
 /* animations */
@@ -89,5 +176,17 @@
   }
   100% {
     -webkit-transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes twinkle {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.5;
   }
 }

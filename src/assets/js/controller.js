@@ -1,4 +1,5 @@
 import { LOCATIONS } from '@/assets/js/constants'
+import shuffle from 'lodash.shuffle'
 import TWEEN from 'tween.js'
 
 /* BaseState class */
@@ -21,6 +22,7 @@ class BaseState {
 class IdleState extends BaseState {
   constructor (controller) {
     super(controller)
+    controller.playSprite('audio')
   }
 
   forward () {
@@ -38,6 +40,7 @@ class RotatingState extends BaseState {
   constructor (controller) {
     super(controller)
     this.tween = null
+    controller.pauseSprite('audio')
   }
 
   forward () {
@@ -82,6 +85,7 @@ class ZoomingState extends BaseState {
     super(controller)
     this.direction = ''
     this.tween = null
+    controller.hideCloud()
   }
 
   _setDirection (direction) {
@@ -151,6 +155,8 @@ class DivingState extends BaseState {
   constructor (controller) {
     super(controller)
     this.count = 0
+    controller.showCloud()
+    controller.hideVideo()
   }
 
   _throttle (fn) {
@@ -189,6 +195,8 @@ class DivingState extends BaseState {
 class PresentingState extends BaseState {
   constructor (controller) {
     super(controller)
+    controller.hideCloud()
+    controller.showVideo()
   }
 
   backward () {
@@ -198,13 +206,28 @@ class PresentingState extends BaseState {
 
 /* Controller class */
 export default class Controller {
-  constructor (earth, cloud) {
-    this.earth = earth
-    this.cloud = cloud
-    this.target = null
+  constructor (options) {
+    this.earth = options.earth
+    this.cloud = options.cloud
+    this.audioSprite = options.audioSprite
+    this.videoSprite = options.videoSprite
+
     this.state = new IdleState(this)
     this.touchDown = false
+
+    this.target = null
+    this.targetList = []
+
+    this._init()
+  }
+
+  _init () {
+    this._shuffleTargetList()
     this._loop()
+  }
+
+  _shuffleTargetList () {
+    this.targetList = shuffle(LOCATIONS.map(location => location.name))
   }
 
   _loop () {
@@ -220,14 +243,6 @@ export default class Controller {
     }
   }
 
-  _handleTouchStart () {
-    this.touchDown = true
-  }
-
-  _handleTouchEnd () {
-    this.touchDown = false
-  }
-
   showCloud () {
     this.cloud.el.style.display = 'block'
   }
@@ -237,20 +252,54 @@ export default class Controller {
   }
 
   showVideo () {
-    document.getElementById('video').style.display = 'block'
+    this.playSprite('video')
+    this.videoSprite.media.style.display = 'block'
   }
 
   hideVideo () {
-    document.getElementById('video').style.display = 'none'
+    this.pauseSprite('video')
+    this.videoSprite.media.style.display = 'none'
+  }
+
+  playSprite (type) {
+    if (!this.target) {
+      return
+    }
+
+    if (type === 'video') {
+      this.videoSprite.repeat(this.target.name)
+    } else if (type === 'audio') {
+      this.audioSprite.play(this.target.name)
+    }
+  }
+
+  pauseSprite (type) {
+    if (type === 'video') {
+      this.videoSprite.pause()
+    } else if (type === 'audio') {
+      this.audioSprite.pause()
+    }
+  }
+
+  start () {
+    this.touchDown = true
+  }
+
+  end () {
+    this.touchDown = false
+  }
+
+  nextTarget () {
+    let nextTargetIndex = (this.targetList.indexOf(this.target ? this.target.name : null) + 1) % this.targetList.length
+    this.setTarget(this.targetList[nextTargetIndex])
   }
 
   setTarget (locationName) {
-    this.target = LOCATIONS.filter(location => location.name === location.name)[0]
+    this.target = LOCATIONS.filter(location => location.name === locationName)[0]
+    this.playSprite('audio')
   }
 
   changeState (stateName) {
-    console.log('change state', stateName)
-
     switch(stateName) {
       case 'idle':
         this.state = new IdleState(this);
@@ -259,17 +308,12 @@ export default class Controller {
         this.state = new RotatingState(this);
         break;
       case 'zooming':
-        this.hideCloud()
         this.state = new ZoomingState(this);
         break;
       case 'diving':
-        this.showCloud()
-        this.hideVideo()
         this.state = new DivingState(this);
         break;
       case 'presenting':
-        this.hideCloud()
-        this.showVideo()
         this.state = new PresentingState(this);
         break;
       default:

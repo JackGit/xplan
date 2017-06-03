@@ -1,10 +1,12 @@
 <template>
-  <div class="c-showCover">
-    <div class="c-showCover__cover"></div>
-    <div class="c-showCover__coord" v-show="showCoord" :style="{backgroundPosition}"></div>
-    <div class="c-showCover__tips" v-show="showTips">
-      <div class="c-showCover__hand"></div>
-    </div>
+  <div class="c-earthCover">
+    <div class="c-earthCover__cover"></div>
+    <div class="c-earthCover__coord" v-show="showCoord" :style="{backgroundPosition}"></div>
+    <transition name="fade">
+      <div class="c-earthCover__tips" v-show="showTips">
+        <div class="c-earthCover__hand"></div>
+      </div>
+    </transition>
   </div>
 </template>
 

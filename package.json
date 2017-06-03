@@ -13,7 +13,8 @@
   "dependencies": {
     "center-it": "^0.1.0",
     "image-sprite": "^1.0.0",
-    "media-sprite": "^1.0.0",
+    "lodash.shuffle": "^4.2.0",
+    "media-sprite": "^1.0.2",
     "resource-loader": "^2.0.8",
     "three": "^0.85.2",
     "three-effectcomposer": "0.0.1",

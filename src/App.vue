@@ -3,8 +3,7 @@
     <loading :progress="progress" v-show="loading"></loading>
     <show v-if="!loading" :target="target"></show>
     <meteor v-if="!loading"></meteor>
-    <clouds v-if="!loading"></clouds>
-    <background-video></background-video>
+    <background-audio></background-audio>
   </div>
 </template>
 
@@ -14,9 +13,8 @@ import Loader from 'resource-loader'
 import Loading from '@/views/Loading'
 import Show from '@/views/Show'
 import Meteor from '@/components/Meteor'
-import Clouds from '@/components/Clouds'
-import BackgroundVideo from '@/components/BackgroundVideo'
 import { IMAGE_URLS } from '@/assets/js/constants'
+import BackgroundAudio from '@/components/BackgroundAudio'
 
 export default {
   name: 'app',
@@ -24,8 +22,7 @@ export default {
     'loading': Loading,
     'show': Show,
     'meteor': Meteor,
-    'clouds': Clouds,
-    'background-video': BackgroundVideo
+    'background-audio': BackgroundAudio
   },
 
   data () {
