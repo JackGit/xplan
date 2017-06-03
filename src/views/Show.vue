@@ -59,10 +59,10 @@ export default {
       document.documentElement.addEventListener('touchmove', this.handleDocumentTouchMove.bind(this))
     },
     handleHold () {
-      controller.start()
+      this.$options.controller.start()
     },
     handleRelease () {
-      controller.end()
+      this.$options.controller.end()
     },
     handleDocumentTouchMove (e) {
       if (this.showTips) {
@@ -71,7 +71,7 @@ export default {
       e.preventDefault()
     },
     handleAudioSpriteEnd () {
-      controller.nextTarget()
+      this.$options.controller.nextTarget()
     },
     createController () {
       let that = this
@@ -103,7 +103,7 @@ export default {
         }
       })
       setTimeout(_ => controller.nextTarget(), 1000)
-      this.$options.controller = window.controller = controller
+      this.$options.controller = controller
     }
   }
 }

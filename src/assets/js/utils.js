@@ -1,4 +1,4 @@
-import { Texture, TextureLoader, RGBFormat, RGBAFormat } from 'three'
+import { TextureLoader } from 'three'
 import { IMAGE_URLS } from '@/assets/js/constants'
 
 let loader = new TextureLoader()
@@ -13,12 +13,12 @@ export function getCanvasImage (image, width, height) {
 }
 
 export function getTexture (imageName) {
-  let image = (window.loader && window.loader.resources[imageName])
+  /* let image = (window.loader && window.loader.resources[imageName])
     ? window.loader.resources[imageName].data
     : null
   let imageURL = IMAGE_URLS[imageName]
 
-  if (image && false) {
+  if (image) {
     let isJPEG = imageURL.endsWith('.jpg') || imageURL.endsWith('.jpeg')
     let texture = new Texture()
     texture.image = image
@@ -26,7 +26,9 @@ export function getTexture (imageName) {
     return texture
   } else {
     return loader.load(imageURL)
-  }
+  } */
+
+  return loader.load(IMAGE_URLS[imageName])
 }
 
 export function isSamePosition (position1, position2, accuracy = 0.01) {

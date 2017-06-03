@@ -96,7 +96,7 @@ class RotatingState extends BaseState {
 
   backward () {
     if (this.tween) {
-      this.tween.update()
+      TWEEN.update()
     } else {
       this.controller.state = new IdleState(this.controller)
     }
@@ -337,24 +337,25 @@ export default class Controller {
   }
 
   changeState (stateName) {
-    switch(stateName) {
+    console.log(stateName)
+    switch (stateName) {
       case 'idle':
-        this.state = new IdleState(this);
-        break;
+        this.state = new IdleState(this)
+        break
       case 'rotating':
-        this.state = new RotatingState(this);
-        break;
+        this.state = new RotatingState(this)
+        break
       case 'zooming':
-        this.state = new ZoomingState(this);
-        break;
+        this.state = new ZoomingState(this)
+        break
       case 'diving':
-        this.state = new DivingState(this);
-        break;
+        this.state = new DivingState(this)
+        break
       case 'presenting':
-        this.state = new PresentingState(this);
-        break;
+        this.state = new PresentingState(this)
+        break
       default:
-        this.state = new BaseState(this);
+        this.state = new BaseState(this)
     }
     this.onStateChange && this.onStateChange(stateName)
   }
