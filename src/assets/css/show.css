@@ -2,6 +2,12 @@
   position: relative;
   width: 100%;
   height: 100%;
+  transform: translateY(0px);
+  transition: transform 1s ease;
+}
+
+.c-show.low-position {
+  transform: translateY(60px);
 }
 
 /* show cover */
@@ -179,6 +185,112 @@
   opacity: 1;
 }
 
+/* end cover */
+.c-endCover {
+  position: absolute;
+  top: -60px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+}
+
+.c-endCover__slogan {
+  position: absolute;
+  top: 20px;
+  left: 48px;
+  width: 279px;
+  height: 127px;
+  background-image: url(../images/end_slogan.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0;
+  animation: fadeIn 1s linear 10s;
+  animation-fill-mode: forwards;
+}
+
+.c-endCover__texts {
+  position: absolute;
+  top: 40px;
+  left: 86px;
+  width: 203px;
+  height: 83px;
+  animation: fadeOut 1s linear 9s;
+  animation-fill-mode: forwards;
+}
+
+.c-endCover__text {
+  position: absolute;
+  width: 100%;
+  background-image: url(../images/end_text.png);
+  background-size: 203px 83px;
+  opacity: 0;
+}
+.c-endCover__text.line1 {
+  top: 0;
+  height: 18px;
+  background-position: 0 0;
+  animation: fadeIn 1s linear 1s;
+  animation-fill-mode: forwards;
+}
+.c-endCover__text.line2 {
+  top: 18px;
+  height: 22px;
+  background-position: 0 -18px;
+  animation: fadeIn 1s linear 3s;
+  animation-fill-mode: forwards;
+}
+.c-endCover__text.line3 {
+  top: 40px;
+  height: 22px;
+  background-position: 0 -40px;
+  animation: fadeIn 1s linear 5s;
+  animation-fill-mode: forwards;
+}
+.c-endCover__text.line4 {
+  top: 62px;
+  height: 21px;
+  background-position: 0 -62px;
+  animation: fadeIn 1s linear 7s;
+  animation-fill-mode: forwards;
+}
+
+.c-endCover__actions {
+  position: absolute;
+  left: 33px;
+  bottom: 40px;
+  width: 309px;
+  height: 50px;
+  opacity: 0;
+  animation: fadeIn 1s linear 10s;
+  animation-fill-mode: forwards;
+}
+.c-endCover__backBtn {
+  position: relative;
+  display: inline-block;
+  width: 140px;
+  height: 50px;
+  float: left;
+  background-image: url(../images/btn_back.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.c-endCover__registerBtn {
+  position: relative;
+  display: inline-block;
+  width: 140px;
+  height: 50px;
+  float: right;
+  background-image: url(../images/btn_register.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
 /* animations */
 @keyframes moveHand {
   0% {
@@ -198,7 +310,7 @@
   }
 }
 
-@-webkit-keyframes twinkle {
+@keyframes twinkle {
   0% {
     opacity: 0.5;
   }
@@ -207,5 +319,23 @@
   }
   100% {
     opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }

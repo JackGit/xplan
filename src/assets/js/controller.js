@@ -53,6 +53,8 @@ class IdleState extends BaseState {
     if (!(controller.state instanceof EnteringState)) {
       controller.playSprite('audio')
     }
+
+    controller.earth.controller.enabled = true
   }
 
   forward () {
@@ -71,6 +73,7 @@ class RotatingState extends BaseState {
     super(controller)
     this.tween = null
     controller.pauseSprite('audio')
+    controller.earth.controller.enabled = false
   }
 
   forward () {
@@ -337,7 +340,6 @@ export default class Controller {
   }
 
   changeState (stateName) {
-    console.log(stateName)
     switch (stateName) {
       case 'idle':
         this.state = new IdleState(this)

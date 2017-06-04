@@ -1,12 +1,24 @@
 <template>
   <page>
-    <div class="c-show">
-      <show-cover :show-tips="showTips" :show-coord="showCoord" :coord-index="coordIndex"></show-cover>
+    <div :class="{'c-show': true, 'low-position': isEnd}">
+      <transition name="fade">
+        <show-cover v-show="!isEnd" :show-tips="showTips" :show-coord="showCoord" :coord-index="coordIndex"></show-cover>
+      </transition>
+
+      <show-end-cover v-if="isEnd" @back="handleBack"></show-end-cover>
       <show-earth ref="earth" :target="target"></show-earth>
       <show-clouds ref="cloudSprite"></show-clouds>
       <show-video-sprite ref="videoSprite"></show-video-sprite>
       <show-audio-sprite ref="audioSprite" @spriteend="handleAudioSpriteEnd"></show-audio-sprite>
-      <show-actions :show-press-button="!showTips" :show-xplan-button="showXplanButton && revealed" @hold="handleHold" @release="handleRelease"></show-actions>
+
+      <transition name="fade">
+        <show-actions v-show="!isEnd"
+                      :show-press-button="!showTips"
+                      :show-xplan-button="showXplanButton && revealed"
+                      @hold="handleHold"
+                      @release="handleRelease"
+                      @knowmore="handleKnowMore"></show-actions>
+      </transition>
     </div>
   </page>
 </template>
@@ -16,6 +28,7 @@ import '@/assets/css/show.css'
 import Controller from '@/assets/js/controller'
 import Page from '@/components/Page'
 import ShowCover from '@/components/show/Cover'
+import ShowEndCover from '@/components/show/EndCover'
 import ShowEarth from '@/components/show/Earth'
 import ShowClouds from '@/components/show/Clouds'
 import VideoSprite from '@/components/show/VideoSprite'
@@ -28,6 +41,7 @@ export default {
   components: {
     'page': Page,
     'show-cover': ShowCover,
+    'show-end-cover': ShowEndCover,
     'show-earth': ShowEarth,
     'show-clouds': ShowClouds,
     'show-video-sprite': VideoSprite,
@@ -41,6 +55,7 @@ export default {
 
   data () {
     return {
+      isEnd: false,
       showTips: true,
       showCoord: false,
       showXplanButton: false,
@@ -63,6 +78,12 @@ export default {
     },
     handleRelease () {
       this.$options.controller.end()
+    },
+    handleKnowMore () {
+      this.isEnd = true
+    },
+    handleBack () {
+      this.isEnd = false
     },
     handleDocumentTouchMove (e) {
       if (this.showTips) {

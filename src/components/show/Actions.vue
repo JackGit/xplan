@@ -22,7 +22,7 @@ export default {
       this.$emit('release')
     },
     handleClickXPlan () {
-      console.log('show xplan')
+      this.$emit('knowmore')
     }
   }
 }
