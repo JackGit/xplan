@@ -4,8 +4,8 @@ var path = require('path')
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../docs/index.html'),   // disc
-    assetsRoot: path.resolve(__dirname, '../docs'),         // disc
+    index: path.resolve(__dirname, '../disc/index.html'),
+    assetsRoot: path.resolve(__dirname, '../disc'),
     assetsSubDirectory: 'static',
     assetsPublicPath: 'http://qiniu.jackyang.me/xplan/',    // /
     productionSourceMap: true,

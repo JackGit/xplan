@@ -246,7 +246,7 @@ export default class Controller {
     this.onStateChange = options.onStateChange
     this.onTargetChange = options.onTargetChange
 
-    this.state = new EnteringState(this)
+    this.state = null
     this.touchDown = false
 
     this.target = null
@@ -256,6 +256,7 @@ export default class Controller {
   }
 
   _init () {
+    setTimeout(_ => { this.state = new EnteringState(this) }, 800)
     this._shuffleTargetList()
     this._loop()
   }
@@ -270,6 +271,10 @@ export default class Controller {
   }
 
   _animate () {
+    if (!this.state) {
+      return
+    }
+
     if (this.state instanceof EnteringState) {
       this.state.forward()
     }
