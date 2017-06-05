@@ -2,6 +2,7 @@ import { TextureLoader } from 'three'
 import { IMAGE_URLS } from '@/assets/js/constants'
 
 let loader = new TextureLoader()
+loader.crossOrigin = ''
 
 export function getCanvasImage (image, width, height) {
   let canvas = document.createElement('canvas')
