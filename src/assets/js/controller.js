@@ -118,6 +118,7 @@ class ZoomingState extends BaseState {
     this.direction = ''
     this.tween = null
     controller.hideCloud()
+    controller.showEarth()
   }
 
   _setDirection (direction) {
@@ -188,6 +189,7 @@ class DivingState extends BaseState {
     super(controller)
     this.count = 0
     controller.showCloud()
+    controller.hideEarth()
     controller.hideVideo()
   }
 
@@ -284,6 +286,14 @@ export default class Controller {
     } else {
       this.state.backward()
     }
+  }
+
+  showEarth () {
+    this.earth.container.style.display = 'block'
+  }
+
+  hideEarth () {
+    this.earth.container.style.display = 'none'
   }
 
   showCloud () {

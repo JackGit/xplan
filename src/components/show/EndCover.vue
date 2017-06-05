@@ -7,7 +7,7 @@
       <div class="c-endCover__text line4"></div>
     </div>
     <div class="c-endCover__slogan"></div>
-    <div class="c-endCover__actions">
+    <div class="c-endCover__actions" ref="actions">
       <span class="c-endCover__backBtn" @click="handleBack"></span>
       <span class="c-endCover__registerBtn" @click="handleRegister"></span>
     </div>
@@ -18,10 +18,16 @@
 export default {
   methods: {
     handleBack () {
-      this.$emit('back')
+      // when opacity of actions is 1, then it's clickable
+      if (window.getComputedStyle(this.$refs.actions).opacity === '1') {
+        this.$emit('back')
+      }
     },
     handleRegister () {
-      window.location.href = 'https://kandian.qq.com/mqq/activity/html/qqexplore.html'
+      // when opacity of actions is 1, then it's clickable
+      if (window.getComputedStyle(this.$refs.actions).opacity === '1') {
+        window.location.href = 'https://kandian.qq.com/mqq/activity/html/qqexplore.html'
+      }
     }
   }
 }
