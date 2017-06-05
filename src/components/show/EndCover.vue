@@ -16,16 +16,26 @@
 
 <script>
 export default {
+  data () {
+    return {
+      active: false
+    }
+  },
+
+  mounted () {
+    setTimeout(() => {
+      this.active = true
+    }, 9000)
+  },
+
   methods: {
     handleBack () {
-      // when opacity of actions is 1, then it's clickable
-      if (window.getComputedStyle(this.$refs.actions).opacity === '1') {
+      if (this.active) {
         this.$emit('back')
       }
     },
     handleRegister () {
-      // when opacity of actions is 1, then it's clickable
-      if (window.getComputedStyle(this.$refs.actions).opacity === '1') {
+      if (this.active) {
         window.location.href = 'https://kandian.qq.com/mqq/activity/html/qqexplore.html'
       }
     }
