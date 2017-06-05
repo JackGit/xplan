@@ -13,7 +13,7 @@ import Loader from 'resource-loader'
 import Loading from '@/views/Loading'
 import Show from '@/views/Show'
 import Meteor from '@/components/Meteor'
-import { IMAGE_URLS, MEDIA_URLS } from '@/assets/js/constants'
+import { IMAGE_URLS } from '@/assets/js/constants'
 import BackgroundAudio from '@/components/BackgroundAudio'
 
 export default {
@@ -40,10 +40,6 @@ export default {
   methods: {
     initLoader () {
       let loader = new Loader()
-
-      ;['audioSprite', 'backgroundAudio'].forEach(name => {
-        loader.add(name, MEDIA_URLS[name])
-      })
 
       Object.keys(IMAGE_URLS).forEach(name => {
         loader.add(name, IMAGE_URLS[name])
