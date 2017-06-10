@@ -1,5 +1,5 @@
-## 使用Vue和threeJS高仿QQ的Xplan H5页面
+## A rotating earth H5 page with Vue and threejs
 
-[The Original H5 Site](https://wa.qq.com/xplan/earth/index.html)
+This is a vue project of reimplementation of [the original H5 site](https://wa.qq.com/xplan/earth/index.html)
 
 ![](https://jackgit.github.io/xplan/illustration_01.jpg)
