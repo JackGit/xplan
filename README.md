@@ -3,3 +3,11 @@
 This is a vue project of reimplementation of [the original H5 site](https://wa.qq.com/xplan/earth/index.html)
 
 ![](https://jackgit.github.io/xplan/illustration_01.jpg)
+
+
+## How to play
+
+1. open it with chrome mobile debug mode
+2. touch and rotate the earth
+3. long press the bottom button
+4. you will then see the magic
