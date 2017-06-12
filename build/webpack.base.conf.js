@@ -31,6 +31,7 @@ module.exports = {
         loader: 'eslint-loader',
         enforce: 'pre',
         include: [resolve('src'), resolve('test')],
+        exclude: [resolve('src/assets/js/jweixin-1.2.0.js')],
         options: {
           formatter: require('eslint-friendly-formatter')
         }
