@@ -15,6 +15,7 @@ export default {
   mounted () {
     let el = this.el
     window.wx.ready(function () {
+      alert(el.src)
       el.play()
       el.pause()
       setTimeout(_ => el.play(), 0)

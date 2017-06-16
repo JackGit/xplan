@@ -505,7 +505,7 @@
   <body>
     <h4 id="log"></h4>
     <button onclick="anotherPlay()">Play</button>
-    <audio id="bg" autoplay loop></audio>
+    <audio id="bg" autoplay loop style="display:none"></audio>
     <!-- built files will be auto injected -->
     <script>
     initWX()
@@ -537,17 +537,19 @@
       a.pause()
     }
 
-    function anotherPlay () {
-      pause()
-      alert('paused')
+    anotherPlay()
 
-      setTimeout(function () {
+    function anotherPlay () {
+      //pause()
+      //alert('paused')
+
+      //setTimeout(function () {
         wx.ready(function () {
-          // initAudio()
-          alert('in ready')
+          initAudio()
+          //alert('in ready')
           play()
         })
-      }, 1000)
+      //}, 1000)
     }
     </script>
   </body>
