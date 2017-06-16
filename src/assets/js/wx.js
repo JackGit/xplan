@@ -31,7 +31,7 @@ export function configWX (appId, timestamp, nonceStr, signature) {
 
 export function setShareInfo () {
   let title = '地球上最漂亮的H5'
-  let link = 'xplay.jackyang.me'
+  let link = 'http://xplan.jackyang.me'
   let imgUrl = IMAGE_URLS.wxShareImg
   let wx = window.wx
   alert('setShareInfo')
