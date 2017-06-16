@@ -12,7 +12,6 @@ export function initWX () {
   }).then(
     r => r.json()
   ).then(r => {
-    console.log('wx jsapi config response', r)
     configWX(r.appId, r.timestamp, r.nonceStr, r.signature)
   })
 }
@@ -26,6 +25,8 @@ export function configWX (appId, timestamp, nonceStr, signature) {
     signature: signature,
     jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
   })
+
+  setShareInfo()
 }
 
 export function setShareInfo () {
