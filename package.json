@@ -22,7 +22,8 @@
     "three-effectcomposer": "0.0.1",
     "three-orbit-controls": "^82.1.0",
     "tween.js": "^16.6.0",
-    "vue": "^2.2.6"
+    "vue": "^2.2.6",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

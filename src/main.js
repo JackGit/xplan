@@ -1,7 +1,8 @@
-import Vue from 'vue'
-import App from './App'
+import 'whatwg-fetch'
 import '@/assets/js/jweixin-1.2.0'
 import { initWX } from '@/assets/js/wx'
+import Vue from 'vue'
+import App from './App'
 
 Vue.config.productionTip = false
 
