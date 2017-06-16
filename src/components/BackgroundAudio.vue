@@ -14,7 +14,8 @@ export default {
 
   mounted () {
     let el = this.el
-    window.wx.ready(function () {
+    alert('bg mounted' + el.src)
+    window.wx.ready(() => {
       alert(el.src)
       el.play()
       el.pause()
