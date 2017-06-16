@@ -44,7 +44,7 @@ export function setShareInfo () {
 
     wx.onMenuShareAppMessage({
       title,
-      desc: title,
+      desc: '这不是xplan官方链接，是来自外籍杰克的最强山寨版 -_-',
       link,
       imgUrl
     })
