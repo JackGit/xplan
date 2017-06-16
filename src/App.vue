@@ -4,6 +4,7 @@
     <show v-if="!loading"></show>
     <meteor v-if="!loading"></meteor>
     <background-audio></background-audio>
+    <footer style="position:fixed;z-index:100;bottom:0;width:100%;padding:4px;color:rgba(255,255,255,.7);text-align:center">ygjack414@hotmail.com</footer>
   </div>
 </template>
 
