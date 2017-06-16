@@ -37,6 +37,11 @@ export default {
         sprites: getSpriteInfo()
       })
       this.$options.videoSprite = videoSprite
+
+      window.wx.ready(() => {
+        videoSprite.media.play()
+        videoSprite.media.pause()
+      })
     }
   }
 }

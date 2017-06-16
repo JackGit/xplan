@@ -10,6 +10,12 @@ export default {
     return {
       audioSrc: MEDIA_URLS.backgroundAudio
     }
+  },
+
+  mounted () {
+    window.wx.ready(() => {
+      this.el.play()
+    })
   }
 }
 </script>

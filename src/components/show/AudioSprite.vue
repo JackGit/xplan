@@ -31,6 +31,11 @@ export default {
         onSpriteEnd: this.handleSpriteEnd.bind(this)
       })
       this.$options.audioSprite = audioSprite
+
+      window.wx.ready(() => {
+        audioSprite.media.play()
+        audioSprite.media.pause()
+      })
     },
     handleSpriteEnd () {
       this.$emit('spriteend')

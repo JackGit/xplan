@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import '@/assets/js/jweixin-1.2.0'
 import '@/assets/css/app.css'
 import Loader from 'resource-loader'
 import Loading from '@/views/Loading'
