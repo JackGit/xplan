@@ -1,3 +1,4 @@
+import { IMAGE_URLS } from '@/assets/js/constants'
 const JSAPI_CONFIG_URL = 'http://wx-service.yotta-tech.cn/jsapi/config'
 
 export function initWX () {
@@ -23,6 +24,28 @@ export function configWX (appId, timestamp, nonceStr, signature) {
     timestamp: timestamp,
     nonceStr: nonceStr,
     signature: signature,
-    jsApiList: ['onMenuShareTimeline']
+    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage']
+  })
+}
+
+export function setShareInfo () {
+  let title = '地球上最漂亮的H5'
+  let link = 'http://xplay.jackyang.me'
+  let imgUrl = IMAGE_URLS.wxShareImg
+  let wx = window.wx
+
+  wx.ready(() => {
+    wx.onMenuShareTimeline({
+      title,
+      link,
+      imgUrl
+    })
+
+    wx.onMenuShareAppMessage({
+      title,
+      desc: title,
+      link,
+      imgUrl
+    })
   })
 }

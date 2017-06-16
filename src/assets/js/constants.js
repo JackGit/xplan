@@ -21,6 +21,7 @@ import cloud10 from '@/assets/images/kf_cloud_00010.jpg'
 import cloud11 from '@/assets/images/kf_cloud_00011.jpg'
 import cloud12 from '@/assets/images/kf_cloud_00012.jpg'
 import meteor from '@/assets/images/bg_meteor.png'
+import wxShareImg from '@/assets/images/wx_share_img.png'
 import videoSprite from '@/assets/videos/video_sprite.mp4'
 import audioSprite from '@/assets/sounds/music_sprite.mp3'
 import backgroundAudio from '@/assets/sounds/music_bg.mp3'
@@ -57,7 +58,8 @@ export const IMAGE_URLS = {
   cloud10,
   cloud11,
   cloud12,
-  meteor
+  meteor,
+  wxShareImg
 }
 
 export const LOCATIONS = [{
