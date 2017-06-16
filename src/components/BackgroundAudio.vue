@@ -14,6 +14,7 @@ export default {
 
   mounted () {
     window.wx.ready(() => {
+      alert('ready bgaudio')
       this.el.play()
     })
   }

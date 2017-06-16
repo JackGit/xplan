@@ -39,6 +39,7 @@ export default {
       this.$options.videoSprite = videoSprite
 
       window.wx.ready(() => {
+        alert('ready videoSprite')
         videoSprite.media.play()
         videoSprite.media.pause()
       })

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <loading :progress="progress" v-show="loading"></loading>
-    <show v-if="!loading" :target="target"></show>
+    <show v-if="!loading"></show>
     <meteor v-if="!loading"></meteor>
     <background-audio></background-audio>
   </div>
@@ -28,8 +28,7 @@ export default {
   data () {
     return {
       progress: 13,
-      loading: true,
-      target: ''
+      loading: true
     }
   },
 

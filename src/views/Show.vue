@@ -6,7 +6,7 @@
       </transition>
 
       <show-end-cover v-if="isEnd" @back="handleBack"></show-end-cover>
-      <show-earth ref="earth" :target="target"></show-earth>
+      <show-earth ref="earth"></show-earth>
       <show-clouds ref="cloudSprite"></show-clouds>
       <show-video-sprite ref="videoSprite"></show-video-sprite>
       <show-audio-sprite ref="audioSprite" @spriteend="handleAudioSpriteEnd"></show-audio-sprite>
@@ -25,6 +25,7 @@
 
 <script>
 import '@/assets/css/show.css'
+import { initWX } from '@/assets/js/wx'
 import Controller from '@/assets/js/controller'
 import Page from '@/components/Page'
 import ShowCover from '@/components/show/Cover'
@@ -49,10 +50,6 @@ export default {
     'show-actions': ShowActions
   },
 
-  props: {
-    target: String
-  },
-
   data () {
     return {
       isEnd: false,
@@ -67,6 +64,8 @@ export default {
   mounted () {
     this.addDocumentTouchMove()
     this.createController()
+
+    setTimeout(initWX, 300)
   },
 
   methods: {

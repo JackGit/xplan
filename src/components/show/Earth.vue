@@ -10,10 +10,6 @@ import Earth from '@/assets/js/earth'
 export default {
   earth: null,
 
-  props: {
-    target: String
-  },
-
   data () {
     return {}
   },

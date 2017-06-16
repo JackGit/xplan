@@ -18,7 +18,7 @@ export function initWX () {
 
 export function configWX (appId, timestamp, nonceStr, signature) {
   window.wx.config({
-    debug: true,
+    debug: false,
     appId: appId,
     timestamp: timestamp,
     nonceStr: nonceStr,

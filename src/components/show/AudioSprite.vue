@@ -33,6 +33,7 @@ export default {
       this.$options.audioSprite = audioSprite
 
       window.wx.ready(() => {
+        alert('ready audiosprite')
         audioSprite.media.play()
         audioSprite.media.pause()
       })
