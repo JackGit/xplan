@@ -34,8 +34,9 @@ export function setShareInfo () {
   let link = 'http://xplay.jackyang.me'
   let imgUrl = IMAGE_URLS.wxShareImg
   let wx = window.wx
-
+  alert('setShareInfo')
   wx.ready(() => {
+    alert('ready to set share info')
     wx.onMenuShareTimeline({
       title,
       link,
