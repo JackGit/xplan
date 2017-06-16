@@ -13,9 +13,11 @@ export default {
   },
 
   mounted () {
-    window.wx.ready(() => {
-      alert('ready bgaudio')
-      this.el.play()
+    let el = this.el
+    window.wx.ready(function () {
+      el.play()
+      el.pause()
+      setTimeout(_ => el.play(), 0)
     })
   }
 }
