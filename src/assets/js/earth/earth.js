@@ -26,8 +26,17 @@ export function createWireFrameEarth () {
   const line = new LineSegments(wireframe)
 
   line.material.depthTest = false
-  line.material.opacity = 0.25
+  line.material.opacity = 0.5
   line.material.transparent = true
 
+  return line
+}
+
+export function createSphere (radius) {
+  const geometry = new SphereGeometry(radius, 4, 4)
+  const wireframe = new WireframeGeometry(geometry)
+  const line = new LineSegments(wireframe)
+  line.material.depthTest = false
+  line.material.transparent = true
   return line
 }

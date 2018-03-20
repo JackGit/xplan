@@ -4,7 +4,7 @@ const EffectComposer = require('three-effectcomposer')(THREE)
 
 import * as Glow from './glow'
 import { createAmbientLight, createSpotLight } from './lights'
-import { createEarth } from './earth'
+import { createEarth, createSphere } from './earth'
 import { createCloud } from './cloud'
 import { createLocationSprite } from './locations'
 import { PAGE_WIDTH, PAGE_HEIGHT, LOCATIONS } from '@/assets/js/constants'
@@ -61,7 +61,7 @@ export default class Earth {
 
   _createCamera () {
     let camera = new THREE.PerspectiveCamera(40, this.width / this.height, 0.1, 1000)
-    camera.position.set(0, 0, -28)
+    camera.position.set(0, 0, 28)
     // camera.position.set(3.55, 0, -328)
     this.scene.add(camera) // this is required cause there is a light under camera
     this.camera = camera
@@ -83,9 +83,17 @@ export default class Earth {
   }
 
   _createEarth () {
-    let earth = createEarth(true)
+    const earthWire = createEarth(true)
+    earthWire.name = 'earthWire'
+    this.earthGroup.add(earthWire)
+
+    const earth = createEarth()
     earth.name = 'earth'
+    earth.material.opacity = 0.4
     this.earthGroup.add(earth)
+
+    window.s = createSphere(0.2)
+    this.scene.add(window.s)
   }
 
   _createCloud () {
