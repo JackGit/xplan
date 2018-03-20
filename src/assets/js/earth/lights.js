@@ -1,7 +1,7 @@
 import { AmbientLight, SpotLight, DirectionalLight } from 'three'
 
 export function createAmbientLight () {
-  return new AmbientLight(0x393939, 0.5)
+  return new AmbientLight(0xffffff, 1)
 }
 
 export function createSpotLight () {

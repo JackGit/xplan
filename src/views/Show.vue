@@ -1,53 +1,23 @@
 <template>
   <page>
     <div :class="{'c-show': true, 'low-position': isEnd}">
-      <transition name="fade">
-        <show-cover v-show="!isEnd" :show-tips="showTips" :show-coord="showCoord" :coord-index="coordIndex"></show-cover>
-      </transition>
-
-      <show-end-cover v-if="isEnd" @back="handleBack"></show-end-cover>
       <show-earth ref="earth"></show-earth>
-      <show-clouds ref="cloudSprite"></show-clouds>
-      <show-video-sprite ref="videoSprite"></show-video-sprite>
-      <show-audio-sprite ref="audioSprite" @spriteend="handleAudioSpriteEnd"></show-audio-sprite>
-
-      <transition name="fade">
-        <show-actions v-show="!isEnd"
-                      :show-press-button="!showTips"
-                      :show-xplan-button="showXplanButton && revealed"
-                      @hold="handleHold"
-                      @release="handleRelease"
-                      @knowmore="handleKnowMore"></show-actions>
-      </transition>
     </div>
   </page>
 </template>
 
 <script>
 import '@/assets/css/show.css'
-import { initWX } from '@/assets/js/wx'
 import Controller from '@/assets/js/controller'
 import Page from '@/components/Page'
-import ShowCover from '@/components/show/Cover'
-import ShowEndCover from '@/components/show/EndCover'
 import ShowEarth from '@/components/show/Earth'
-import ShowClouds from '@/components/show/Clouds'
-import VideoSprite from '@/components/show/VideoSprite'
-import AudioSprite from '@/components/show/AudioSprite'
-import ShowActions from '@/components/show/Actions'
 
 export default {
   controller: null,
 
   components: {
     'page': Page,
-    'show-cover': ShowCover,
-    'show-end-cover': ShowEndCover,
-    'show-earth': ShowEarth,
-    'show-clouds': ShowClouds,
-    'show-video-sprite': VideoSprite,
-    'show-audio-sprite': AudioSprite,
-    'show-actions': ShowActions
+    'show-earth': ShowEarth
   },
 
   data () {
@@ -63,9 +33,7 @@ export default {
 
   mounted () {
     this.addDocumentTouchMove()
-    this.createController()
-
-    setTimeout(initWX, 300)
+    // this.createController()
   },
 
   methods: {

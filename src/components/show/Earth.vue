@@ -17,6 +17,7 @@ export default {
   mounted () {
     let earth = new Earth(this.$refs.mountNode)
     this.$options.earth = earth
+    window.earth = earth
   }
 }
 </script>

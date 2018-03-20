@@ -29,7 +29,7 @@ export default class Earth {
     this.hasGlow = false
 
     this.autoRotate = true
-    this.rotationSpeed = 0.001
+    this.rotationSpeed = 0 // 0.001
     this.cloudSpeed = -0.0003
 
     this._init()
@@ -41,9 +41,9 @@ export default class Earth {
     this._createCamera()
     this._createLight()
     this._createEarth()
-    this._createCloud()
+    // this._createCloud()
     this._createLocations()
-    this._createOutGlow()
+    // this._createOutGlow()
     this._createController()
 
     this._loop()
@@ -61,15 +61,16 @@ export default class Earth {
 
   _createCamera () {
     let camera = new THREE.PerspectiveCamera(40, this.width / this.height, 0.1, 1000)
-    // camera.position.set(0, 0, -28)
-    camera.position.set(3.55, 0, -328)
+    camera.position.set(0, 0, -28)
+    // camera.position.set(3.55, 0, -328)
     this.scene.add(camera) // this is required cause there is a light under camera
     this.camera = camera
   }
 
   _createLight () {
     this.scene.add(createAmbientLight())
-    this.camera.add(createSpotLight())  // fixed light direction by adding it as child of camera
+    // this.camera.add(createSpotLight())  // fixed light direction by adding it as child of camera
+    createSpotLight()
   }
 
   _createScene () {
@@ -82,7 +83,8 @@ export default class Earth {
   }
 
   _createEarth () {
-    let earth = createEarth()
+    let earth = createEarth(true)
+    earth.name = 'earth'
     this.earthGroup.add(earth)
   }
 
@@ -153,14 +155,14 @@ export default class Earth {
 
   _animate () {
     let rotationSpeed = this.rotationSpeed
-    let cloudSpeed = this.cloudSpeed
+    // let cloudSpeed = this.cloudSpeed
 
     if (this.autoRotate) {
       this.camera.position.x = this.camera.position.x * Math.cos(rotationSpeed) - this.camera.position.z * Math.sin(rotationSpeed)
       this.camera.position.z = this.camera.position.z * Math.cos(rotationSpeed) + this.camera.position.x * Math.sin(rotationSpeed)
     }
 
-    this.cloud.rotation.y += cloudSpeed
+    // this.cloud.rotation.y += cloudSpeed
     this.controller.update()
   }
 
