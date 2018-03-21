@@ -1,5 +1,5 @@
 import { Mesh, SphereGeometry, MeshPhongMaterial, Color, LineSegments, WireframeGeometry } from 'three'
-import { getTexture } from '@/assets/js/utils'
+import { getTexture, latlng2Xyz } from '@/assets/js/utils'
 
 export function createEarth (wireframe = false) {
   if (wireframe) {
@@ -30,4 +30,22 @@ export function createWireFrameEarth () {
   line.material.transparent = true
 
   return line
+}
+
+export function createSphere (r) {
+  const geometry = new SphereGeometry(r, 8, 8)
+  const wireframe = new WireframeGeometry(geometry)
+  const line = new LineSegments(wireframe)
+  line.material.depthTest = false
+  line.material.transparent = true
+  return line
+}
+
+export function createBeijing () {
+  const sphere = createSphere(0.1)
+  const { x, y, z } = latlng2Xyz(40.13, 117.10, 5)
+  sphere.position.x = x
+  sphere.position.y = y
+  sphere.position.z = z
+  return sphere
 }
