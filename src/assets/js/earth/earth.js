@@ -26,7 +26,7 @@ export function createWireFrameEarth () {
   const line = new LineSegments(wireframe)
 
   line.material.depthTest = false
-  line.material.opacity = 0.25
+  line.material.opacity = 0.5
   line.material.transparent = true
 
   return line
