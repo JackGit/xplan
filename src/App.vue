@@ -4,7 +4,12 @@
     <show v-if="!loading"></show>
     <meteor v-if="!loading"></meteor>
     <background-audio></background-audio>
-    <footer style="position:fixed;z-index:100;bottom:0;width:100%;padding:4px;color:rgba(255,255,255,.7);text-align:center">ygjack414@hotmail.com</footer>
+    <footer style="position:fixed;z-index:100;bottom:18px;width:100%;padding:4px;color:rgba(255,255,255,.7);text-align:center;font-size:14px">
+      ygjack414@hotmail.com <a href="https://github.com/JackGit/xplan">Github</a>
+    </footer>
+    <footer style="position:fixed;z-index:100;bottom:0;width:100%;padding:4px;color:rgba(255,255,255,.7);text-align:center;font-size:12px">
+      <a href="https://beian.miit.gov.cn">鄂ICP备16000816号-1</a>
+    </footer>
   </div>
 </template>
 
