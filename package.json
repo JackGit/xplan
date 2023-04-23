@@ -18,7 +18,7 @@
     "lodash.shuffle": "^4.2.0",
     "media-sprite": "^1.1.0",
     "resource-loader": "^2.0.8",
-    "three": "^0.85.2",
+    "three": "^0.137.0",
     "three-effectcomposer": "0.0.1",
     "three-orbit-controls": "^82.1.0",
     "tween.js": "^16.6.0",
